@@ -1,0 +1,9 @@
+node_modules
+.idea
+dist
+.DS_Store
+*.log
+
+src/typegen.d.ts
+.eslint-config-inspector
+.vercel

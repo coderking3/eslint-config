@@ -1,0 +1,95 @@
+{
+  "name": "@king-3/eslint-config",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.6.1",
+  "description": "ESLint config for @king-3",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/coderking3/eslint-config#readme",
+  "bugs": {
+    "url": "https://github.com/coderking3/eslint-config/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coderking3/eslint-config.git"
+  },
+  "author": "king3 <w2196592083@gmail.com>",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "eslint-config-inspector --config eslint-inspector.config.ts",
+    "build": "pnpm run typegen && tsdown",
+    "build:inspector": "eslint-config-inspector build --config eslint-inspector.config.ts",
+    "typegen": "tsx scripts/typegen.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint",
+    "lint:fix": "pnpm run lint --fix",
+    "release": "bumpp && pnpm publish",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "@unocss/eslint-plugin": ">=65.0.0",
+    "eslint": "^9.5.0"
+  },
+  "peerDependenciesMeta": {
+    "@unocss/eslint-plugin": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@eslint/config-inspector": "catalog:dev",
+    "@types/node": "catalog:dev",
+    "@unocss/eslint-plugin": "catalog:plugins",
+    "ansis": "catalog:dev",
+    "bumpp": "catalog:dev",
+    "eslint": "catalog:",
+    "eslint-typegen": "catalog:dev",
+    "tsdown": "catalog:dev",
+    "tsx": "catalog:dev",
+    "typescript": "catalog:dev"
+  },
+  "dependencies": {
+    "@eslint-community/eslint-plugin-eslint-comments": "catalog:plugins",
+    "@eslint/js": "catalog:",
+    "@eslint/markdown": "catalog:plugins",
+    "@typescript-eslint/eslint-plugin": "catalog:plugins",
+    "@typescript-eslint/parser": "catalog:parsers",
+    "eslint-config-flat-gitignore": "catalog:plugins",
+    "eslint-config-prettier": "catalog:plugins",
+    "eslint-flat-config-utils": "catalog:",
+    "eslint-plugin-antfu": "catalog:plugins",
+    "eslint-plugin-command": "catalog:plugins",
+    "eslint-plugin-import-lite": "catalog:plugins",
+    "eslint-plugin-jsdoc": "catalog:plugins",
+    "eslint-plugin-jsonc": "catalog:plugins",
+    "eslint-plugin-n": "catalog:plugins",
+    "eslint-plugin-perfectionist": "catalog:plugins",
+    "eslint-plugin-pnpm": "catalog:plugins",
+    "eslint-plugin-prettier": "catalog:plugins",
+    "eslint-plugin-regexp": "catalog:plugins",
+    "eslint-plugin-unicorn": "catalog:plugins",
+    "eslint-plugin-unused-imports": "catalog:plugins",
+    "eslint-plugin-vue": "catalog:plugins",
+    "eslint-plugin-yml": "catalog:plugins",
+    "globals": "catalog:",
+    "jsonc-eslint-parser": "catalog:parsers",
+    "local-pkg": "catalog:",
+    "prettier": "catalog:dev",
+    "vue-eslint-parser": "catalog:parsers",
+    "yaml-eslint-parser": "catalog:parsers"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
