@@ -80,7 +80,8 @@
     "jsonc-eslint-parser": "catalog:parsers",
     "local-pkg": "catalog:",
     "vue-eslint-parser": "catalog:parsers",
-    "yaml-eslint-parser": "catalog:parsers"
+    "yaml-eslint-parser": "catalog:parsers",
+    "prettier": "catalog:dev"
   },
   "devDependencies": {
     "@eslint-react/eslint-plugin": "catalog:plugins",
@@ -92,7 +93,6 @@
     "eslint": "catalog:",
     "eslint-plugin-react-hooks": "catalog:plugins",
     "eslint-typegen": "catalog:dev",
-    "prettier": "catalog:dev",
     "tsdown": "catalog:dev",
     "tsx": "catalog:dev",
     "typescript": "catalog:dev"
