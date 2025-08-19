@@ -1,7 +1,7 @@
+import type { ParserOptions } from '@typescript-eslint/parser'
 import type { Linter } from 'eslint'
 import type { FlatGitignoreOptions } from 'eslint-config-flat-gitignore'
 import type { ConfigNames, RuleOptions } from './typegen'
-import type { ParserOptions } from '@typescript-eslint/parser'
 
 export type Awaitable<T> = T | Promise<T>
 
@@ -113,6 +113,10 @@ export interface OptionsUnoCSS extends OptionsOverrides {
   strict?: boolean
 }
 
+export interface OptionsHasTypeScript {
+  typescript?: boolean
+}
+
 export type OptionsTypescript =
   | (OptionsTypeScriptWithTypes & OptionsOverrides)
   | (OptionsTypeScriptParserOptions & OptionsOverrides)
@@ -143,13 +147,6 @@ export interface OptionsConfig extends OptionsComponentExts {
   typescript?: boolean | OptionsTypescript
 
   /**
-   * Enable JSX related rules.
-   *
-   * @default true
-   */
-  // jsx?: boolean
-
-  /**
    * Options for eslint-plugin-unicorn.
    *
    * @default true
@@ -157,18 +154,11 @@ export interface OptionsConfig extends OptionsComponentExts {
   unicorn?: boolean | OptionsUnicorn
 
   /**
-   * Options for eslint-plugin-import-lite.
-   *
-   * @default true
-   */
-  imports?: boolean | OptionsOverrides
-
-  /**
    * Enable Vue support.
    *
    * @default auto-detect based on the dependencies
    */
-  // vue?: boolean | OptionsVue
+  vue?: boolean
 
   /**
    * Enable JSONC support.
@@ -202,26 +192,24 @@ export interface OptionsConfig extends OptionsComponentExts {
   regexp?: boolean | (OptionsRegExp & OptionsOverrides)
 
   /**
+   * Enable prettier support.
+   * Requires installing:
+   * - `prettier`
+   *
+   * @default true
+   */
+  prettier?: boolean
+
+  /**
    * Enable react rules.
    *
    * Requires installing:
    * - `@eslint-react/eslint-plugin`
    * - `eslint-plugin-react-hooks`
-   * - `eslint-plugin-react-refresh`
    *
-   * @default false
+   * @default auto-detect based on the dependencies
    */
-  // react?: boolean | OptionsOverrides
-
-  /**
-   * Enable nextjs rules.
-   *
-   * Requires installing:
-   * - `@next/eslint-plugin-next`
-   *
-   * @default false
-   */
-  // nextjs?: boolean | OptionsOverrides
+  react?: boolean | OptionsOverrides
 
   /**
    * Enable unocss rules.
@@ -229,7 +217,7 @@ export interface OptionsConfig extends OptionsComponentExts {
    * Requires installing:
    * - `@unocss/eslint-plugin`
    *
-   * @default false
+   * @default auto-detect based on the dependencies
    */
   unocss?: boolean | OptionsUnoCSS
 
@@ -260,10 +248,10 @@ export interface OptionsConfig extends OptionsComponentExts {
   overrides?: {
     javascript?: TypedFlatConfigItem['rules']
     typescript?: TypedFlatConfigItem['rules']
-    // vue?: TypedFlatConfigItem['rules']
+    vue?: TypedFlatConfigItem['rules']
     jsonc?: TypedFlatConfigItem['rules']
     markdown?: TypedFlatConfigItem['rules']
     yaml?: TypedFlatConfigItem['rules']
-    // react?: TypedFlatConfigItem['rules']
+    react?: TypedFlatConfigItem['rules']
   }
 }

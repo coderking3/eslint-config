@@ -7,6 +7,7 @@ export async function unocss(
 ): Promise<TypedFlatConfigItem[]> {
   const { attributify = true, strict = false } = options
 
+  // @unocss/eslint-plugin 需要手动安装
   const [pluginUnoCSS] = await Promise.all([
     interopDefault(import('@unocss/eslint-plugin'))
   ] as const)

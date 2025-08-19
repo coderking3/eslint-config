@@ -1,14 +1,14 @@
 import type { Linter } from 'eslint'
 import type { RuleOptions } from './typegen'
+
 import type {
-  Awaitable,
   ConfigNames,
+  Awaitable,
   OptionsConfig,
   TypedFlatConfigItem
 } from './types'
 
 import { FlatConfigComposer } from 'eslint-flat-config-utils'
-import { isPackageExists } from 'local-pkg'
 
 import {
   command,
@@ -23,6 +23,7 @@ import {
   perfectionist,
   pnpm,
   prettier,
+  react,
   regexp,
   sortPackageJson,
   sortPnpmWorkspace,
@@ -30,9 +31,10 @@ import {
   typescript,
   unicorn,
   unocss,
+  vue,
   yaml
 } from './configs'
-import { hasTypeScript, hasUnoCSS } from './env'
+import { hasReact, hasTypeScript, hasUnoCSS, hasVue } from './env'
 import { interopDefault } from './utils'
 
 const flatConfigProps = [
@@ -63,7 +65,7 @@ export const defaultPluginRenaming = {
  * @returns {Promise<TypedFlatConfigItem[]>}
  *  The merged ESLint configurations.
  */
-export function antfu(
+export function king3(
   options: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {},
   ...userConfigs: Awaitable<
     | TypedFlatConfigItem
@@ -75,15 +77,40 @@ export function antfu(
   const {
     autoRenamePlugins = true,
     componentExts = [],
-    imports: enableImports = true,
-    pnpm: enableCatalogs = false, // TODO: smart detect
+    gitignore: enableGitignore = true,
+    pnpm: enableCatalogs = false,
+    prettier: enablePrettier = true,
+    react: enableReact = hasReact(),
     regexp: enableRegexp = true,
     typescript: enableTypeScript = hasTypeScript(),
     unicorn: enableUnicorn = true,
-    unocss: enableUnoCSS = hasUnoCSS()
+    unocss: enableUnoCSS = hasUnoCSS(),
+    vue: enableVue = hasVue()
   } = options
 
   const configs: Awaitable<TypedFlatConfigItem[]>[] = []
+
+  if (enableGitignore) {
+    if (typeof enableGitignore !== 'boolean') {
+      configs.push(
+        interopDefault(import('eslint-config-flat-gitignore')).then((r) => [
+          r({
+            name: 'king3/gitignore',
+            ...enableGitignore
+          })
+        ])
+      )
+    } else {
+      configs.push(
+        interopDefault(import('eslint-config-flat-gitignore')).then((r) => [
+          r({
+            name: 'king3/gitignore',
+            strict: false
+          })
+        ])
+      )
+    }
+  }
 
   const typescriptOptions = resolveSubOptions(options, 'typescript')
   const tsconfigPath =
@@ -111,6 +138,14 @@ export function antfu(
     configs.push(unicorn(enableUnicorn === true ? {} : enableUnicorn))
   }
 
+  if (enableVue) {
+    componentExts.push('vue')
+  }
+
+  // if (enableJsx) {
+  //   configs.push(jsx(enableJsx === true ? {} : enableJsx))
+  // }
+
   if (enableTypeScript) {
     configs.push(
       typescript({
@@ -125,7 +160,87 @@ export function antfu(
     configs.push(regexp(typeof enableRegexp === 'boolean' ? {} : enableRegexp))
   }
 
-  return [] as any
+  if (enableVue) {
+    configs.push(
+      vue({
+        overrides: getOverrides(options, 'vue'),
+        typescript: !!enableTypeScript
+      })
+    )
+  }
+
+  if (enableReact) {
+    configs.push(
+      react({
+        ...typescriptOptions,
+        overrides: getOverrides(options, 'react'),
+        tsconfigPath
+      })
+    )
+  }
+
+  if (enableUnoCSS) {
+    configs.push(
+      unocss({
+        ...resolveSubOptions(options, 'unocss'),
+        overrides: getOverrides(options, 'unocss')
+      })
+    )
+  }
+
+  if (enablePrettier) {
+    configs.push(prettier())
+  }
+
+  if (options.jsonc ?? true) {
+    configs.push(
+      jsonc({
+        overrides: getOverrides(options, 'jsonc')
+      }),
+      sortPackageJson(),
+      sortTsconfig(),
+      sortPnpmWorkspace()
+    )
+  }
+
+  if (enableCatalogs) {
+    configs.push(pnpm())
+  }
+
+  if (options.yaml ?? true) {
+    configs.push(
+      yaml({
+        overrides: getOverrides(options, 'yaml')
+      })
+    )
+  }
+
+  if (options.markdown ?? true) {
+    configs.push(
+      markdown({
+        componentExts,
+        overrides: getOverrides(options, 'markdown')
+      })
+    )
+  }
+
+  // User can optionally pass a flat config item to the first argument
+  // We pick the known keys as ESLint would do schema validation
+  const fusedConfig = flatConfigProps.reduce((acc, key) => {
+    if (key in options) acc[key] = options[key] as any
+    return acc
+  }, {} as TypedFlatConfigItem)
+  if (Object.keys(fusedConfig).length) configs.push([fusedConfig])
+
+  let composer = new FlatConfigComposer<TypedFlatConfigItem, ConfigNames>()
+
+  composer = composer.append(...configs, ...(userConfigs as any))
+
+  if (autoRenamePlugins) {
+    composer = composer.renamePlugins(defaultPluginRenaming)
+  }
+
+  return composer
 }
 
 export type ResolvedOptions<T> = T extends boolean ? never : NonNullable<T>

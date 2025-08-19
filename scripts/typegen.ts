@@ -3,10 +3,9 @@ import { green } from 'ansis'
 import { flatConfigsToRulesDTS } from 'eslint-typegen/core'
 import { builtinRules } from 'eslint/use-at-your-own-risk'
 
-import { combine } from '../src/utils'
 import {
-  comments,
   command,
+  comments,
   ignores,
   imports,
   javascript,
@@ -17,13 +16,16 @@ import {
   perfectionist,
   pnpm,
   prettier,
+  react,
   regexp,
   sortPackageJson,
   typescript,
   unicorn,
+  vue,
   unocss,
   yaml
 } from '../src/configs'
+import { combine } from '../src/utils'
 
 const configs = await combine(
   {
@@ -45,10 +47,12 @@ const configs = await combine(
   perfectionist(),
   pnpm(),
   prettier(),
+  react(),
   regexp(),
   sortPackageJson(),
   typescript(),
   unicorn(),
+  vue(),
   unocss(),
   yaml()
 )

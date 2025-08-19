@@ -1,4 +1,4 @@
-import type { TypedFlatConfigItem } from '../types'
+import type { Rules, TypedFlatConfigItem } from '../types'
 
 import { interopDefault } from '../utils'
 
@@ -8,8 +8,8 @@ export async function prettier(): Promise<TypedFlatConfigItem[]> {
     interopDefault(import('eslint-plugin-prettier/recommended'))
   ] as const)
 
-  const rules = { ...pluginPrettierRecommended.rules }
-  delete rules['vue/html-self-closing']
+  const recommendedRules = { ...pluginPrettierRecommended.rules } as Rules
+  delete recommendedRules['vue/html-self-closing']
 
   return [
     {
@@ -18,7 +18,7 @@ export async function prettier(): Promise<TypedFlatConfigItem[]> {
         prettier: pluginPrettier
       },
       rules: {
-        ...rules,
+        ...recommendedRules,
         'prettier/prettier': 'warn'
       }
     }

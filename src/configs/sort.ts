@@ -93,7 +93,7 @@ export async function sortPackageJson(): Promise<TypedFlatConfigItem[]> {
  *
  * Requires `jsonc` config
  */
-export async function sortTsconfig(): Promise<TypedFlatConfigItem[]> {
+export function sortTsconfig(): TypedFlatConfigItem[] {
   return [
     {
       files: ['**/tsconfig.json', '**/tsconfig.*.json'],

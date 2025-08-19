@@ -36,8 +36,9 @@ catalogs:
 
   plugins:
     '@eslint-community/eslint-plugin-eslint-comments': ^4.5.0
-    '@eslint/markdown': ^7.1.0
+    '@eslint-react/eslint-plugin': ^1.52.5
     '@unocss/eslint-plugin': ^66.3.3
+    '@eslint/markdown': ^7.1.0
     '@typescript-eslint/eslint-plugin': ^8.38.0
     eslint-config-flat-gitignore: ^2.1.0
     eslint-config-prettier: ^10.1.8
@@ -49,6 +50,7 @@ catalogs:
     eslint-plugin-n: ^17.21.0
     eslint-plugin-perfectionist: ^4.15.0
     eslint-plugin-pnpm: ^1.1.0
+    eslint-plugin-react-hooks: ^5.2.0
     eslint-plugin-regexp: ^2.9.0
     eslint-plugin-prettier: ^5.5.3
     eslint-plugin-unicorn: ^60.0.0

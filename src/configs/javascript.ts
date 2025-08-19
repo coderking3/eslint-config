@@ -1,7 +1,7 @@
 import type { OptionsOverrides, TypedFlatConfigItem } from '../types'
 
-import globals from 'globals'
 import eslintJs from '@eslint/js'
+import globals from 'globals'
 
 import { pluginUnusedImports } from '../plugins'
 
@@ -18,7 +18,6 @@ export async function javascript(
 
   return [
     {
-      name: 'king3/javascript/setup',
       languageOptions: {
         ecmaVersion: 2022,
         globals: {
@@ -40,7 +39,8 @@ export async function javascript(
       },
       linterOptions: {
         reportUnusedDisableDirectives: true
-      }
+      },
+      name: 'king3/javascript/setup'
     },
     {
       name: 'king3/javascript/rules',

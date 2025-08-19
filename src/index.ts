@@ -1,1 +1,9 @@
-export * from "./configs";
+import { king3 } from './factory'
+
+export * from './configs'
+export * from './factory'
+export * from './globs'
+export * from './types'
+export * from './utils'
+
+export default king3

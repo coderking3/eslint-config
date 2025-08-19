@@ -18,7 +18,7 @@ export async function markdown(
   return [
     ...pluginMarkdown.configs.processor.map((config) => ({
       ...config,
-      name: `king3/markdown/${config.name || 'anonymous'}`
+      name: `king3/${config.name || 'anonymous'}`
     })),
 
     {
