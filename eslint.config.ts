@@ -5,7 +5,7 @@ const eslintConfig = king3({
   react: true,
   typescript: true,
   unocss: true,
-  vue: true,
+  vue: true
 })
 
 export default eslintConfig

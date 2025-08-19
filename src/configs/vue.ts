@@ -111,7 +111,12 @@ export async function vue(
         'vue/no-constant-condition': 'warn',
         'vue/no-empty-pattern': 'error',
         'vue/no-loss-of-precision': 'error',
-
+        'vue/no-restricted-syntax': [
+          'error',
+          'DebuggerStatement',
+          'LabeledStatement',
+          'WithStatement'
+        ],
         'vue/no-setup-props-reactivity-loss': 'off',
         'vue/no-unused-refs': 'error',
         'vue/no-useless-v-bind': 'error',

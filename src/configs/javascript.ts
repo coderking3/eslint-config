@@ -5,12 +5,6 @@ import globals from 'globals'
 
 import { pluginUnusedImports } from '../plugins'
 
-export const restrictedSyntaxJs: string[] = [
-  'ForInStatement',
-  'LabeledStatement',
-  'WithStatement'
-]
-
 export async function javascript(
   options: OptionsOverrides = {}
 ): Promise<TypedFlatConfigItem[]> {
@@ -71,7 +65,11 @@ export async function javascript(
         'no-inner-declarations': 'error',
         'no-lonely-if': 'error',
         'no-multi-str': 'error',
-        'no-restricted-syntax': ['error', ...restrictedSyntaxJs],
+        'no-restricted-syntax': [
+          'error',
+          'TSEnumDeclaration[const=true]',
+          'TSExportAssignment'
+        ],
         'no-unused-expressions': [
           'error',
           {
@@ -100,7 +98,6 @@ export async function javascript(
         'prefer-rest-params': 'error',
         'prefer-spread': 'error',
         'prefer-template': 'error',
-        'require-await': 'error',
         'unicode-bom': ['error', 'never'],
         'unused-imports/no-unused-imports': 'warn',
         'unused-imports/no-unused-vars': [

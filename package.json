@@ -34,6 +34,7 @@
     "build:typegen": "tsx scripts/typegen.ts",
     "format": "prettier --write --log-level warn \"src/**/*.ts\"",
     "lint": "eslint",
+    "lint:fix": "eslint --fix",
     "release": "bumpp && pnpm publish"
   },
   "peerDependencies": {
@@ -79,9 +80,9 @@
     "globals": "catalog:",
     "jsonc-eslint-parser": "catalog:parsers",
     "local-pkg": "catalog:",
+    "prettier": "catalog:dev",
     "vue-eslint-parser": "catalog:parsers",
-    "yaml-eslint-parser": "catalog:parsers",
-    "prettier": "catalog:dev"
+    "yaml-eslint-parser": "catalog:parsers"
   },
   "devDependencies": {
     "@eslint-react/eslint-plugin": "catalog:plugins",

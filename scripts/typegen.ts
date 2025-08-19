@@ -21,8 +21,8 @@ import {
   sortPackageJson,
   typescript,
   unicorn,
-  vue,
   unocss,
+  vue,
   yaml
 } from '../src/configs'
 import { combine } from '../src/utils'
@@ -70,4 +70,5 @@ export type ConfigNames = ${configNames.map((i) => `'${i}'`).join(' | ')}
 
 await writeFile('src/typegen.d.ts', dts)
 
+// eslint-disable-next-line no-console
 console.log(green('Type definitions generated!'))
