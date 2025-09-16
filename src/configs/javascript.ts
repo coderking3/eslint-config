@@ -98,6 +98,7 @@ export async function javascript(
         'prefer-rest-params': 'error',
         'prefer-spread': 'error',
         'prefer-template': 'error',
+        'require-await': 'off',
         'unicode-bom': ['error', 'never'],
         'unused-imports/no-unused-imports': 'warn',
         'unused-imports/no-unused-vars': [

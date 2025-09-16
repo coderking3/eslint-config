@@ -19,6 +19,7 @@ import {
   jsdoc,
   jsonc,
   markdown,
+  nextjs,
   node,
   perfectionist,
   pnpm,
@@ -79,6 +80,7 @@ export function king3(
     componentExts = [],
     gitignore: enableGitignore = true,
     pnpm: enableCatalogs = false,
+    nextjs: enableNextjs = false,
     prettier: enablePrettier = true,
     react: enableReact = hasReact(),
     regexp: enableRegexp = true,
@@ -175,6 +177,14 @@ export function king3(
         ...typescriptOptions,
         overrides: getOverrides(options, 'react'),
         tsconfigPath
+      })
+    )
+  }
+
+  if (enableNextjs) {
+    configs.push(
+      nextjs({
+        overrides: getOverrides(options, 'nextjs')
       })
     )
   }

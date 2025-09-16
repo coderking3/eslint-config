@@ -12,6 +12,7 @@ import {
   jsdoc,
   jsonc,
   markdown,
+  nextjs,
   node,
   perfectionist,
   pnpm,
@@ -54,7 +55,8 @@ const configs = await combine(
   unicorn(),
   vue(),
   unocss(),
-  yaml()
+  yaml(),
+  nextjs()
 )
 
 const configNames = configs.map((i) => i.name).filter(Boolean) as string[]

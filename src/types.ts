@@ -212,6 +212,16 @@ export interface OptionsConfig extends OptionsComponentExts {
   react?: boolean | OptionsOverrides
 
   /**
+   * Enable nextjs rules.
+   *
+   * Requires installing:
+   * - `@next/eslint-plugin-next`
+   *
+   * @default false
+   */
+  nextjs?: boolean | OptionsOverrides
+
+  /**
    * Enable unocss rules.
    *
    * Requires installing:

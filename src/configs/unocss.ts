@@ -1,13 +1,14 @@
 import type { OptionsUnoCSS, TypedFlatConfigItem } from '../types'
 
-import { interopDefault } from '../utils'
+import { ensurePackages, interopDefault } from '../utils'
 
 export async function unocss(
   options: OptionsUnoCSS = {}
 ): Promise<TypedFlatConfigItem[]> {
   const { attributify = true, strict = false } = options
 
-  // @unocss/eslint-plugin 需要手动安装
+  await ensurePackages(['@unocss/eslint-plugin'])
+
   const [pluginUnoCSS] = await Promise.all([
     interopDefault(import('@unocss/eslint-plugin'))
   ] as const)

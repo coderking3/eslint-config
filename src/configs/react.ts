@@ -6,9 +6,14 @@ import type {
   TypedFlatConfigItem
 } from '../types'
 
-import { GLOB_MARKDOWN, GLOB_SRC, GLOB_TS, GLOB_TSX } from '../globs'
+import { isPackageExists } from 'local-pkg'
 
-import { interopDefault } from '../utils'
+import { GLOB_MARKDOWN, GLOB_SRC, GLOB_TS, GLOB_TSX } from '../globs'
+import { ensurePackages, interopDefault } from '../utils'
+
+// react refresh
+const ReactRefreshAllowConstantExportPackages = ['vite']
+const NextJsPackages = ['next']
 
 export async function react(
   options: OptionsTypeScriptParserOptions &
@@ -30,11 +35,25 @@ export async function react(
     'react/no-leaked-conditional-rendering': 'warn'
   }
 
+  await ensurePackages([
+    '@eslint-react/eslint-plugin',
+    'eslint-plugin-react-hooks',
+    'eslint-plugin-react-refresh'
+  ])
+
   // @unocss/eslint-plugin 需要手动安装
-  const [pluginReact, pluginReactHooks] = await Promise.all([
-    interopDefault(import('@eslint-react/eslint-plugin')),
-    interopDefault(import('eslint-plugin-react-hooks'))
-  ] as const)
+  const [pluginReact, pluginReactHooks, pluginReactRefresh] = await Promise.all(
+    [
+      interopDefault(import('@eslint-react/eslint-plugin')),
+      interopDefault(import('eslint-plugin-react-hooks')),
+      interopDefault(import('eslint-plugin-react-refresh'))
+    ] as const
+  )
+
+  const isAllowConstantExport = ReactRefreshAllowConstantExportPackages.some(
+    (i) => isPackageExists(i)
+  )
+  const isUsingNext = NextJsPackages.some((i) => isPackageExists(i))
 
   const plugins = pluginReact.configs.all.plugins
 
@@ -47,6 +66,7 @@ export async function react(
         'react-hooks': pluginReactHooks,
         'react-hooks-extra': plugins['@eslint-react/hooks-extra'],
         'react-naming-convention': plugins['@eslint-react/naming-convention'],
+        'react-refresh': pluginReactRefresh,
         'react-web-api': plugins['@eslint-react/web-api']
       }
     },
@@ -133,6 +153,33 @@ export async function react(
         'react-web-api/no-leaked-interval': 'warn',
         'react-web-api/no-leaked-resize-observer': 'warn',
         'react-web-api/no-leaked-timeout': 'warn',
+
+        // preconfigured rules from eslint-plugin-react-refresh https://github.com/ArnaudBarre/eslint-plugin-react-refresh/tree/main/src
+        'react-refresh/only-export-components': [
+          'warn',
+          {
+            allowConstantExport: isAllowConstantExport,
+            allowExportNames: [
+              ...(isUsingNext
+                ? [
+                    'dynamic',
+                    'dynamicParams',
+                    'revalidate',
+                    'fetchCache',
+                    'runtime',
+                    'preferredRegion',
+                    'maxDuration',
+                    'config',
+                    'generateStaticParams',
+                    'metadata',
+                    'generateMetadata',
+                    'viewport',
+                    'generateViewport'
+                  ]
+                : [])
+            ]
+          }
+        ],
 
         ...overrides
       }
