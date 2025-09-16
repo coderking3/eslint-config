@@ -39,12 +39,17 @@
   },
   "peerDependencies": {
     "@eslint-react/eslint-plugin": "^1.38.4",
+    "@next/eslint-plugin-next": "^15.5.3",
     "@unocss/eslint-plugin": ">=65.0.0",
     "eslint": "^9.5.0",
-    "eslint-plugin-react-hooks": "^5.2.0"
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20"
   },
   "peerDependenciesMeta": {
     "@eslint-react/eslint-plugin": {
+      "optional": true
+    },
+    "@next/eslint-plugin-next": {
       "optional": true
     },
     "@unocss/eslint-plugin": {
@@ -52,17 +57,22 @@
     },
     "eslint-plugin-react-hooks": {
       "optional": true
+    },
+    "eslint-plugin-react-refresh": {
+      "optional": true
     }
   },
   "dependencies": {
+    "@antfu/install-pkg": "catalog:prod",
+    "@clack/prompts": "catalog:prod",
     "@eslint-community/eslint-plugin-eslint-comments": "catalog:plugins",
-    "@eslint/js": "catalog:",
-    "@eslint/markdown": "catalog:plugins",
+    "@eslint/js": "catalog:prod",
+    "@eslint/markdown": "catalog:prod",
     "@typescript-eslint/eslint-plugin": "catalog:plugins",
     "@typescript-eslint/parser": "catalog:parsers",
-    "eslint-config-flat-gitignore": "catalog:plugins",
-    "eslint-config-prettier": "catalog:plugins",
-    "eslint-flat-config-utils": "catalog:",
+    "eslint-config-flat-gitignore": "catalog:prod",
+    "eslint-config-prettier": "catalog:prod",
+    "eslint-flat-config-utils": "catalog:prod",
     "eslint-plugin-antfu": "catalog:plugins",
     "eslint-plugin-command": "catalog:plugins",
     "eslint-plugin-import-lite": "catalog:plugins",
@@ -77,22 +87,24 @@
     "eslint-plugin-unused-imports": "catalog:plugins",
     "eslint-plugin-vue": "catalog:plugins",
     "eslint-plugin-yml": "catalog:plugins",
-    "globals": "catalog:",
+    "globals": "catalog:prod",
     "jsonc-eslint-parser": "catalog:parsers",
-    "local-pkg": "catalog:",
-    "prettier": "catalog:dev",
+    "local-pkg": "catalog:prod",
+    "prettier": "catalog:prod",
     "vue-eslint-parser": "catalog:parsers",
     "yaml-eslint-parser": "catalog:parsers"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "catalog:plugins",
+    "@eslint-react/eslint-plugin": "catalog:peer",
     "@eslint/config-inspector": "catalog:dev",
+    "@next/eslint-plugin-next": "catalog:peer",
     "@types/node": "catalog:dev",
-    "@unocss/eslint-plugin": "catalog:plugins",
+    "@unocss/eslint-plugin": "catalog:peer",
     "ansis": "catalog:dev",
     "bumpp": "catalog:dev",
-    "eslint": "catalog:",
-    "eslint-plugin-react-hooks": "catalog:plugins",
+    "eslint": "catalog:peer",
+    "eslint-plugin-react-hooks": "catalog:peer",
+    "eslint-plugin-react-refresh": "catalog:peer",
     "eslint-typegen": "catalog:dev",
     "tsdown": "catalog:dev",
     "tsx": "catalog:dev",
