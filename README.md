@@ -121,5 +121,5 @@ npm i -D @unocss/eslint-plugin
 Most rules are the same, but there are also some differences:
 
 - Use Prettier instead of ESLint Stylistic.
-- The framework only supports vue and react.
+- Supports frameworks such as Vue, React, Nuxt, Next, etc.
 - Perhaps stricter and simpler.
