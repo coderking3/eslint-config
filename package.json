@@ -1,6 +1,6 @@
 {
   "name": "@king-3/eslint-config",
-  "version": "1.0.5",
+  "version": "1.0.6-beta.1",
   "packageManager": "pnpm@10.6.1",
   "description": "ESLint config for @king-3",
   "type": "module",
