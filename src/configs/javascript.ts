@@ -56,7 +56,7 @@ export async function javascript(
         'no-alert': 'warn',
         'no-console': ['warn', { allow: ['warn', 'error', 'info', 'clear'] }],
         'no-debugger': 'warn',
-        'no-duplicate-imports': 'error',
+        'no-duplicate-imports': 'off',
         'no-empty': ['error', { allowEmptyCatch: true }],
         'no-fallthrough': [
           'warn',

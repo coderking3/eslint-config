@@ -41,6 +41,7 @@ export async function typescript(
     'no-implied-eval': 'off',
     'typescript/await-thenable': 'error',
     'typescript/dot-notation': ['error', { allowKeywords: true }],
+    'typescript/no-duplicate-imports': 'error',
     'typescript/no-floating-promises': 'error',
     'typescript/no-for-in-array': 'error',
     'typescript/no-implied-eval': 'error',
