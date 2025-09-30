@@ -32,7 +32,7 @@
     "build": "pnpm run build:typegen && tsdown --clean --dts",
     "build:inspector": "pnpm build && npx @eslint/config-inspector build",
     "build:typegen": "tsx scripts/typegen.ts",
-    "format": "prettier --write --log-level warn \"src/**/*.ts\"",
+    "format": "prettier . --write",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "release": "bumpp && pnpm publish",
@@ -98,6 +98,7 @@
   "devDependencies": {
     "@eslint-react/eslint-plugin": "catalog:peer",
     "@eslint/config-inspector": "catalog:dev",
+    "@king-3/prettier-config": "catalog:dev",
     "@next/eslint-plugin-next": "catalog:peer",
     "@types/node": "catalog:dev",
     "@unocss/eslint-plugin": "catalog:peer",
