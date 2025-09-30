@@ -6,10 +6,10 @@ import type {
   TypedFlatConfigItem
 } from '../types'
 
-import { GLOB_MARKDOWN, GLOB_SRC, GLOB_TS, GLOB_TSX } from '../globs'
-
-import { ensurePackages, interopDefault } from '../utils'
 import { isPackageExists } from 'local-pkg'
+
+import { GLOB_MARKDOWN, GLOB_SRC, GLOB_TS, GLOB_TSX } from '../globs'
+import { ensurePackages, interopDefault } from '../utils'
 
 // react refresh
 const ReactRefreshAllowConstantExportPackages = ['vite']

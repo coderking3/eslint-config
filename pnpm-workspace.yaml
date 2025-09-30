@@ -9,8 +9,8 @@ overrides:
 
 catalogs:
   dev:
-    '@eslint/config-inspector': ^1.1.0
     '@king-3/prettier-config': ^1.0.0
+    '@eslint/config-inspector': ^1.1.0
     '@types/node': ^24.1.0
     ansis: ^4.1.0
     bumpp: ^10.2.0
