@@ -10,7 +10,7 @@ overrides:
 catalogs:
   dev:
     '@eslint/config-inspector': ^1.1.0
-    '@king-3/prettier-config': ^1.0.0
+    '@king-3/prettier-config': ^1.0.2
     '@types/node': ^24.1.0
     ansis: ^4.1.0
     bumpp: ^10.2.0
@@ -61,3 +61,5 @@ catalogs:
     globals: ^16.3.0
     local-pkg: ^1.1.1
     prettier: ^3.6.2
+  conflicts_dev_h1_0_2:
+    '@king-3/prettier-config': ^1.0.2

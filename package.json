@@ -29,7 +29,7 @@
   },
   "scripts": {
     "dev": "npx @eslint/config-inspector --config eslint.config.ts",
-    "build": "pnpm run build:typegen && tsdown --clean --dts",
+    "build": "pnpm run build:typegen && tsdown",
     "build:inspector": "pnpm build && npx @eslint/config-inspector build",
     "build:typegen": "tsx scripts/typegen.ts",
     "format": "prettier . --write",
