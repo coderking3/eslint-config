@@ -103,7 +103,12 @@ export async function javascript(
         'unused-imports/no-unused-imports': 'warn',
         'unused-imports/no-unused-vars': [
           'error',
-          { args: 'after-used', ignoreRestSiblings: true }
+          {
+            args: 'after-used',
+            ignoreRestSiblings: true,
+            varsIgnorePattern: '^_',
+            argsIgnorePattern: '^_'
+          }
         ],
         'use-isnan': [
           'error',
