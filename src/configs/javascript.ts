@@ -5,6 +5,12 @@ import globals from 'globals'
 
 import { pluginUnusedImports } from '../plugins'
 
+export const restrictedSyntaxJs: string[] = [
+  'LabeledStatement',
+  'TSEnumDeclaration[const=true]',
+  'TSExportAssignment'
+]
+
 export async function javascript(
   options: OptionsOverrides = {}
 ): Promise<TypedFlatConfigItem[]> {
@@ -13,10 +19,10 @@ export async function javascript(
   return [
     {
       languageOptions: {
-        ecmaVersion: 2022,
+        ecmaVersion: 'latest',
         globals: {
           ...globals.browser,
-          ...globals.es2021,
+          ...globals.es2026,
           ...globals.node,
           document: 'readonly',
           navigator: 'readonly',
@@ -26,7 +32,7 @@ export async function javascript(
           ecmaFeatures: {
             jsx: true
           },
-          ecmaVersion: 2022,
+          ecmaVersion: 'latest',
           sourceType: 'module'
         },
         sourceType: 'module'
@@ -65,11 +71,7 @@ export async function javascript(
         'no-inner-declarations': 'error',
         'no-lonely-if': 'error',
         'no-multi-str': 'error',
-        'no-restricted-syntax': [
-          'error',
-          'TSEnumDeclaration[const=true]',
-          'TSExportAssignment'
-        ],
+        'no-restricted-syntax': ['error', ...restrictedSyntaxJs],
         'no-unused-expressions': [
           'error',
           {

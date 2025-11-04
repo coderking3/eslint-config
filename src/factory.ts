@@ -79,6 +79,7 @@ export function king3(
     autoRenamePlugins = true,
     componentExts = [],
     gitignore: enableGitignore = true,
+    ignores: userIgnores = [],
     pnpm: enableCatalogs = false,
     nextjs: enableNextjs = false,
     prettier: enablePrettier = true,
@@ -125,7 +126,7 @@ export function king3(
     command(),
     comments(),
     imports(),
-    ignores(options.ignores),
+    ignores(userIgnores),
     javascript({
       overrides: getOverrides(options, 'javascript')
     }),

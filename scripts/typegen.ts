@@ -3,61 +3,31 @@ import { green } from 'ansis'
 import { flatConfigsToRulesDTS } from 'eslint-typegen/core'
 import { builtinRules } from 'eslint/use-at-your-own-risk'
 
-import {
-  command,
-  comments,
-  ignores,
-  imports,
-  javascript,
-  jsdoc,
-  jsonc,
-  markdown,
-  nextjs,
-  node,
-  perfectionist,
-  pnpm,
-  prettier,
-  react,
-  regexp,
-  sortPackageJson,
-  typescript,
-  unicorn,
-  unocss,
-  vue,
-  yaml
-} from '../src/configs'
-import { combine } from '../src/utils'
+import { king3 } from '../src/factory'
 
-const configs = await combine(
-  {
-    plugins: {
-      '': {
-        rules: Object.fromEntries(builtinRules.entries())
-      }
-    }
+const configs = await king3({
+  gitignore: true,
+  jsonc: true,
+  markdown: true,
+  nextjs: true,
+  pnpm: true,
+  prettier: true,
+  react: true,
+  regexp: true,
+  typescript: {
+    tsconfigPath: 'tsconfig.json'
   },
-  comments(),
-  command(),
-  ignores(),
-  imports(),
-  javascript(),
-  jsdoc(),
-  jsonc(),
-  markdown(),
-  node(),
-  perfectionist(),
-  pnpm(),
-  prettier(),
-  react(),
-  regexp(),
-  sortPackageJson(),
-  typescript(),
-  unicorn(),
-  vue(),
-  unocss(),
-  yaml(),
-  nextjs()
-)
+  unicorn: true,
+  unocss: true,
+  vue: true,
+  yaml: true
+}).prepend({
+  plugins: {
+    '': {
+      rules: Object.fromEntries(builtinRules.entries())
+    }
+  }
+})
 
 const configNames = configs.map((i) => i.name).filter(Boolean) as string[]
 
@@ -73,4 +43,4 @@ export type ConfigNames = ${configNames.map((i) => `'${i}'`).join(' | ')}
 await writeFile('src/typegen.d.ts', dts)
 
 // eslint-disable-next-line no-console
-console.log(green('Type definitions generated!'))
+console.log('✅', green('Type definitions generated!'))
