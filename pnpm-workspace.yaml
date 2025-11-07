@@ -15,11 +15,11 @@ catalogs:
     ansis: ^4.2.0
     bumpp: ^10.3.1
     eslint-typegen: ^2.3.0
+    lint-staged: ^16.2.6
+    simple-git-hooks: ^2.13.1
     tsdown: ^0.15.12
     tsx: ^4.20.6
     typescript: ^5.9.3
-    lint-staged: ^16.2.6
-    simple-git-hooks: ^2.13.1
   parsers:
     '@typescript-eslint/parser': ^8.46.3
     jsonc-eslint-parser: ^2.4.1
