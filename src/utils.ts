@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { isPackageExists } from 'local-pkg'
 
 const scopeUrl = fileURLToPath(new URL('.', import.meta.url))
-const isCwdInScope = isPackageExists('@antfu/eslint-config')
+const isCwdInScope = isPackageExists('@king-3/eslint-config')
 
 /**
  * Combine array and non-array configs into a single array.

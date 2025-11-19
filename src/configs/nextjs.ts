@@ -31,7 +31,7 @@ export async function nextjs(
     const rules = pluginNextJS.configs?.[name]?.rules
     if (!rules)
       throw new Error(
-        `[@antfu/eslint-config] Failed to find config ${name} in @next/eslint-plugin-next`
+        `[@king-3/eslint-config] Failed to find config ${name} in @next/eslint-plugin-next`
       )
     return normalizeRules(rules)
   }
