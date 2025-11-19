@@ -82,6 +82,22 @@ export async function react(
       },
       name: 'king3/react/rules',
       rules: {
+        // recommended rules from eslint-plugin-react-dom https://eslint-react.xyz/docs/rules/overview#dom-rules
+        'react-dom/no-dangerously-set-innerhtml': 'warn',
+        'react-dom/no-dangerously-set-innerhtml-with-children': 'error',
+        'react-dom/no-find-dom-node': 'error',
+        'react-dom/no-flush-sync': 'error',
+        'react-dom/no-hydrate': 'error',
+        'react-dom/no-missing-button-type': 'warn',
+        'react-dom/no-missing-iframe-sandbox': 'warn',
+        'react-dom/no-namespace': 'error',
+        'react-dom/no-render': 'error',
+        'react-dom/no-render-return-value': 'error',
+        'react-dom/no-script-url': 'warn',
+        'react-dom/no-unsafe-iframe-sandbox': 'warn',
+        'react-dom/no-unsafe-target-blank': 'warn',
+        'react-dom/no-use-form-state': 'error',
+        'react-dom/no-void-elements-with-children': 'error',
         // recommended rules from eslint-plugin-react-x https://eslint-react.xyz/docs/rules/overview#core-rules
         'react/jsx-no-comment-textnodes': 'warn',
         'react/jsx-no-duplicate-props': 'warn',
@@ -108,6 +124,7 @@ export async function react(
         'react/no-nested-component-definitions': 'error',
         'react/no-prop-types': 'error',
         'react/no-redundant-should-component-update': 'error',
+
         'react/no-set-state-in-component-did-mount': 'warn',
         'react/no-set-state-in-component-did-update': 'warn',
         'react/no-set-state-in-component-will-update': 'warn',
@@ -124,34 +141,11 @@ export async function react(
         'react/no-useless-forward-ref': 'warn',
         'react/prefer-use-state-lazy-initialization': 'warn',
 
-        // recommended rules from eslint-plugin-react-dom https://eslint-react.xyz/docs/rules/overview#dom-rules
-        'react-dom/no-dangerously-set-innerhtml': 'warn',
-        'react-dom/no-dangerously-set-innerhtml-with-children': 'error',
-        'react-dom/no-find-dom-node': 'error',
-        'react-dom/no-flush-sync': 'error',
-        'react-dom/no-hydrate': 'error',
-        'react-dom/no-missing-button-type': 'warn',
-        'react-dom/no-missing-iframe-sandbox': 'warn',
-        'react-dom/no-namespace': 'error',
-        'react-dom/no-render': 'error',
-        'react-dom/no-render-return-value': 'error',
-        'react-dom/no-script-url': 'warn',
-        'react-dom/no-unsafe-iframe-sandbox': 'warn',
-        'react-dom/no-unsafe-target-blank': 'warn',
-        'react-dom/no-use-form-state': 'error',
-        'react-dom/no-void-elements-with-children': 'error',
-
         // recommended rules eslint-plugin-react-hooks https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks/src/rules
         ...pluginReactHooks.configs.recommended.rules,
 
         // recommended rules from eslint-plugin-react-hooks-extra https://eslint-react.xyz/docs/rules/overview#hooks-extra-rules
         'react-hooks-extra/no-direct-set-state-in-use-effect': 'warn',
-
-        // recommended rules from eslint-plugin-react-web-api https://eslint-react.xyz/docs/rules/overview#web-api-rules
-        'react-web-api/no-leaked-event-listener': 'warn',
-        'react-web-api/no-leaked-interval': 'warn',
-        'react-web-api/no-leaked-resize-observer': 'warn',
-        'react-web-api/no-leaked-timeout': 'warn',
 
         // preconfigured rules from eslint-plugin-react-refresh https://github.com/ArnaudBarre/eslint-plugin-react-refresh/tree/main/src
         'react-refresh/only-export-components': [
@@ -179,6 +173,12 @@ export async function react(
             ]
           }
         ],
+        // recommended rules from eslint-plugin-react-web-api https://eslint-react.xyz/docs/rules/overview#web-api-rules
+        'react-web-api/no-leaked-event-listener': 'warn',
+        'react-web-api/no-leaked-interval': 'warn',
+        'react-web-api/no-leaked-resize-observer': 'warn',
+
+        'react-web-api/no-leaked-timeout': 'warn',
 
         ...overrides
       }

@@ -40,12 +40,12 @@ export async function typescript(
     'dot-notation': 'off',
     'no-implied-eval': 'off',
     'typescript/await-thenable': 'error',
-    'typescript/dot-notation': ['error', { allowKeywords: true }],
-    'typescript/no-duplicate-imports': 'error',
     'typescript/consistent-type-imports': [
       'error',
-      { prefer: 'type-imports', disallowTypeAnnotations: false }
+      { disallowTypeAnnotations: false, prefer: 'type-imports' }
     ],
+    'typescript/dot-notation': ['error', { allowKeywords: true }],
+    'typescript/no-duplicate-imports': 'error',
     'typescript/no-floating-promises': 'error',
     'typescript/no-for-in-array': 'error',
     'typescript/no-implied-eval': 'error',

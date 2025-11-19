@@ -107,9 +107,9 @@ export async function javascript(
           'error',
           {
             args: 'after-used',
+            argsIgnorePattern: '^_',
             ignoreRestSiblings: true,
-            varsIgnorePattern: '^_',
-            argsIgnorePattern: '^_'
+            varsIgnorePattern: '^_'
           }
         ],
         'use-isnan': [

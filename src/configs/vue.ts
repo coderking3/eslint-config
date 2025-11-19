@@ -76,11 +76,11 @@ export async function vue(
           'error',
           { order: ['script', 'template', 'style'] }
         ],
-        'vue/custom-event-name-casing': ['error', 'camelCase'],
         'vue/component-name-in-template-casing': ['error', 'PascalCase'],
         'vue/component-options-name-casing': ['error', 'PascalCase'],
         // this is deprecated
         'vue/component-tags-order': 'off',
+        'vue/custom-event-name-casing': ['error', 'camelCase'],
         'vue/define-macros-order': [
           'error',
           {
@@ -93,6 +93,7 @@ export async function vue(
           }
         ],
         'vue/eqeqeq': ['error', 'smart'],
+        'vue/html-quotes': ['error', 'double'],
         'vue/html-self-closing': [
           'error',
           {
@@ -105,7 +106,6 @@ export async function vue(
             svg: 'always'
           }
         ],
-        'vue/html-quotes': ['error', 'double'],
         'vue/max-attributes-per-line': 'off',
         'vue/multi-word-component-names': 'off',
         'vue/no-constant-condition': 'warn',

@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises'
-import { green } from 'ansis'
+import { bold, green } from 'ansis'
 import { flatConfigsToRulesDTS } from 'eslint-typegen/core'
 import { builtinRules } from 'eslint/use-at-your-own-risk'
 
@@ -43,4 +43,4 @@ export type ConfigNames = ${configNames.map((i) => `'${i}'`).join(' | ')}
 await writeFile('src/typegen.d.ts', dts)
 
 // eslint-disable-next-line no-console
-console.log('✅', green('Type definitions generated!'))
+console.log('📘', bold(green('Type definitions generated!')))
