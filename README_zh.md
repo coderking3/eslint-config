@@ -1,6 +1,6 @@
 # @king-3/eslint-config
 
-> king3's ESLint config preset.
+> king3 的 ESLint 配置预设。
 
 [![npm version](https://img.shields.io/npm/v/@king-3/eslint-config.svg)](https://www.npmjs.com/package/@king-3/eslint-config)
 [![npm downloads](https://img.shields.io/npm/dm/@king-3/eslint-config.svg)](https://www.npmjs.com/package/@king-3/eslint-config)
@@ -9,23 +9,23 @@
 
 [English](./README.md) | [中文](./README_zh.md)
 
-## Features
+## 特性
 
-- 🚀 Flat config, compose easily
-- ✨ Auto-detect TypeScript, Vue, React support
-- 🎨 Works seamlessly with Prettier
-- 📦 Optional configs for UnoCSS, React, and more
-- 🔧 Reasonable defaults, easy to customize
+- 🚀 Flat 配置，轻松组合
+- ✨ 自动检测 TypeScript、Vue、React 支持
+- 🎨 与 Prettier 完美协作
+- 📦 可选配置支持 UnoCSS、React 等
+- 🔧 合理的默认配置，易于自定义
 
-## Installation
+## 安装
 
-### Quick Setup
+### 快速开始
 
 ```bash
 pnpm add -D eslint @king-3/eslint-config
 ```
 
-Create `eslint.config.mjs` in your project root:
+在项目根目录创建 `eslint.config.mjs`:
 
 ```js
 // eslint.config.mjs
@@ -34,9 +34,9 @@ import king3 from '@king-3/eslint-config'
 export default king3()
 ```
 
-### Add Scripts
+### 添加脚本
 
-Add the following scripts to your `package.json`:
+在 `package.json` 中添加以下脚本:
 
 ```json
 {
@@ -47,11 +47,11 @@ Add the following scripts to your `package.json`:
 }
 ```
 
-## Customization
+## 自定义配置
 
-### Basic Configuration
+### 基础配置
 
-You can configure each integration individually:
+你可以单独配置每个集成:
 
 ```js
 // eslint.config.js
@@ -59,39 +59,39 @@ import king3 from '@king-3/eslint-config'
 
 export default king3(
   {
-    // TypeScript and Vue are auto-detected, you can also explicitly enable them:
+    // TypeScript 和 Vue 会自动检测，你也可以显式启用:
     typescript: true,
     vue: true,
 
-    // Disable jsonc and yaml support
+    // 禁用 jsonc 和 yaml 支持
     jsonc: false,
     yaml: false,
 
-    // `.eslintignore` is no longer supported in Flat config, use `ignores` instead
+    // Flat 配置不再支持 `.eslintignore`，请使用 `ignores` 代替
     ignores: [
       '**/fixtures',
       '**/dist'
       // ...globs
     ]
   },
-  // From the second arguments they are ESLint Flat Configs
-  // you can have multiple configs
+  // 从第二个参数开始是 ESLint Flat 配置
+  // 你可以有多个配置对象
   {
     files: ['**/*.ts'],
     rules: {
-      // Your custom rules
+      // 你的自定义规则
     }
   }
 )
 ```
 
-### Optional Configs
+### 可选配置
 
-We provide some optional configs for specific use cases. Dependencies are not included by default and need to be installed manually.
+我们为特定用例提供了一些可选配置。默认不包含依赖项,需要手动安装。
 
 #### React
 
-To enable React support:
+启用 React 支持:
 
 ```js
 // eslint.config.js
@@ -102,7 +102,7 @@ export default king3({
 })
 ```
 
-Install required dependencies:
+安装所需依赖:
 
 ```bash
 pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-hooks
@@ -110,7 +110,7 @@ pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-hooks
 
 #### UnoCSS
 
-To enable UnoCSS support:
+启用 UnoCSS 支持:
 
 ```js
 // eslint.config.js
@@ -121,23 +121,23 @@ export default king3({
 })
 ```
 
-Install required dependencies:
+安装所需依赖:
 
 ```bash
 pnpm add -D @unocss/eslint-plugin
 ```
 
-## IDE Support
+## IDE 支持
 
 ### VS Code
 
-Install the [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
+安装 [ESLint 扩展](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)。
 
-Add the following to your `.vscode/settings.json`:
+在 `.vscode/settings.json` 中添加以下配置:
 
 ```json
 {
-  // Enable auto-fix on save
+  // 启用保存时自动修复
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
@@ -145,19 +145,19 @@ Add the following to your `.vscode/settings.json`:
 }
 ```
 
-### Working with Prettier
+### 配合 Prettier 使用
 
-Install [Prettier extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
+安装 [Prettier 扩展](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)。
 
-For the best experience with Prettier, use the following settings:
+为了获得最佳体验,请使用以下配置:
 
 ```json
 {
-  /* Editor - General */
+  /* 编辑器 - 通用 */
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
 
-  /* Editor - Code Actions */
+  /* 编辑器 - 代码操作 */
   "editor.codeActionsOnSave": {
     "source.fixAll": "never",
     "source.fixAll.eslint": "explicit",
@@ -166,39 +166,39 @@ For the best experience with Prettier, use the following settings:
 
   /* Prettier */
   "prettier.enable": true,
-  // Optional: specify your custom Prettier config file path
+  // 可选：指定你自定义的 Prettier 配置文件路径
   "prettier.configPath": "./prettier.config.js"
 }
 ```
 
-**Recommended Prettier Config**
+**推荐的 Prettier 配置**
 
-You can use [@king-3/prettier-config](https://github.com/coderking3/prettier-config) for a consistent code style that works well with this ESLint config:
+你可以使用 [@king-3/prettier-config](https://github.com/coderking3/prettier-config) 来获得与此 ESLint 配置配合良好的一致代码风格:
 
 ```bash
 pnpm add -D @king-3/prettier-config
 ```
 
-Create `.prettierrc.js` (or `./prettier.config.js`) in your project root:
+在项目根目录创建 `.prettierrc.js`（或 `prettier.config.js`）:
 
 ```js
 import { king3 } from '@king-3/prettier-config'
 
 export default king3({
-  // Optional: customize your config
+  // 可选：自定义你的配置
   printWidth: 120
 })
 ```
 
-## Comparison with @antfu/eslint-config
+## 与 @antfu/eslint-config 的对比
 
-Most rules are the same, but with some key differences:
+大部分规则相同,但也有一些关键差异:
 
-- ✨ Uses Prettier instead of ESLint Stylistic
-- 🎯 First-class support for Vue, React, Nuxt, Next, etc.
-- 📏 Stricter and more opinionated defaults
-- 🔧 Simpler configuration API
+- ✨ 使用 Prettier 而非 ESLint Stylistic
+- 🎯 对 Vue、React、Nuxt、Next 等框架的一流支持
+- 📏 更严格、更主观的默认配置
+- 🔧 更简洁的配置 API
 
-## License
+## 许可证
 
 [MIT](./LICENSE) License © 2025 [king3](https://github.com/coderking3)
