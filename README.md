@@ -201,4 +201,4 @@ Most rules are the same, but with some key differences:
 
 ## License
 
-[MIT](./LICENSE) License © 2025 [king3](https://github.com/coderking3)
+[MIT](./LICENSE) License © 2025-PRESENT [king3](https://github.com/coderking3)

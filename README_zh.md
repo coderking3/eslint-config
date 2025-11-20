@@ -201,4 +201,4 @@ export default king3({
 
 ## 许可证
 
-[MIT](./LICENSE) License © 2025 [king3](https://github.com/coderking3)
+[MIT](./LICENSE) License © 2025-至今 [king3](https://github.com/coderking3)
