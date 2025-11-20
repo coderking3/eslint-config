@@ -6,37 +6,61 @@ import process from 'node:process'
 
 import { bold, cyan, green, red, yellow } from 'ansis'
 
-// Define paths
-const distDirPath = join(process.cwd(), 'dist')
-const getDtsPath = (fileName: string) => join(distDirPath, fileName)
-const sourceDts = 'index.d.mts'
-const targetDts = 'index.d.ts'
+// File rename configuration
+const RENAME_MAP = [
+  { from: 'index.d.mts', to: 'index.d.ts' },
+  { from: 'index.mjs', to: 'index.js' }
+] as const
 
-try {
-  console.log(bold(cyan('\n🚀 Starting build...\n')))
-  console.log(yellow('📦 Running tsdown build...'))
+const distDir = join(process.cwd(), 'dist')
 
-  execSync('tsdown', { stdio: 'inherit' }) // tsdown 会自己输出，不加多余空行
+/**
+ * Rename a file in the dist directory
+ */
+function renameFile(from: string, to: string): boolean {
+  const sourcePath = join(distDir, from)
+  const targetPath = join(distDir, to)
 
-  // Rename index.d.mts → index.d.ts
-  if (existsSync(getDtsPath(sourceDts))) {
-    renameSync(getDtsPath(sourceDts), getDtsPath(targetDts))
-    console.log(
-      green('🔁 Renamed ') + bold(sourceDts) + green(' → ') + bold(targetDts)
-    )
-  } else {
-    console.log(yellow(`ℹ️  dist/${sourceDts} not found, skip rename.`))
+  if (!existsSync(sourcePath)) {
+    console.log(yellow(`ℹ️  ${from} not found, skipping...`))
+    return false
   }
 
-  console.log(bold(green('\n🎉 Build process completed successfully!\n')))
-} catch (error: unknown) {
-  const msg =
-    error instanceof Error
-      ? error.message
-      : typeof error === 'string'
-        ? error
-        : JSON.stringify(error)
-
-  console.error(`${bold(red('\n❌ Build failed: ')) + red(msg)}\n`)
-  process.exit(1)
+  renameSync(sourcePath, targetPath)
+  console.log(green('🔁 Renamed ') + bold(from) + green(' → ') + bold(to))
+  return true
 }
+
+/**
+ * Format error message for display
+ */
+function formatError(error: unknown): string {
+  if (error instanceof Error) return error.message
+  if (typeof error === 'string') return error
+  return JSON.stringify(error)
+}
+
+/**
+ * Main build process
+ */
+function build() {
+  try {
+    console.log(bold(cyan('\n🚀 Starting build script...\n')))
+    console.log(yellow('📦 Running tsdown build...'))
+
+    execSync('tsdown', { stdio: 'inherit' })
+
+    // Batch rename files
+    console.log()
+    RENAME_MAP.forEach(({ from, to }) => renameFile(from, to))
+
+    console.log(bold(green('\n🎉 Build completed successfully!\n')))
+  } catch (error) {
+    console.error(
+      `${bold(red('\n❌ Build failed: ')) + red(formatError(error))}\n`
+    )
+    process.exit(1)
+  }
+}
+
+build()
