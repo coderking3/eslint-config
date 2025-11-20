@@ -41,8 +41,8 @@ Add the following scripts to your `package.json`:
 ```json
 {
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   }
 }
 ```
