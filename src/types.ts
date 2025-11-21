@@ -1,6 +1,7 @@
 import type { ParserOptions } from '@typescript-eslint/parser'
 import type { Linter } from 'eslint'
 import type { FlatGitignoreOptions } from 'eslint-config-flat-gitignore'
+
 import type { ConfigNames, RuleOptions } from './typegen'
 
 export type Awaitable<T> = T | Promise<T>

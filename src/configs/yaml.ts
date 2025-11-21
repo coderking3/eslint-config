@@ -4,6 +4,7 @@ import type {
   Rules,
   TypedFlatConfigItem
 } from '../types'
+
 import { GLOB_YAML } from '../globs'
 import { interopDefault } from '../utils'
 

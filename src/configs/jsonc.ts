@@ -1,4 +1,5 @@
 import type { Linter } from 'eslint'
+
 import type {
   OptionsFiles,
   OptionsOverrides,
@@ -6,7 +7,6 @@ import type {
 } from '../types'
 
 import { GLOB_JSON, GLOB_JSON5, GLOB_JSONC } from '../globs'
-
 import { interopDefault } from '../utils'
 
 export async function jsonc(

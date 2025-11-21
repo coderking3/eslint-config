@@ -5,7 +5,6 @@ import type {
 } from '../types'
 
 import { GLOB_MARKDOWN, GLOB_MARKDOWN_CODE } from '../globs'
-
 import { interopDefault } from '../utils'
 
 export async function markdown(
