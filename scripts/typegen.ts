@@ -3,7 +3,7 @@ import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import process from 'node:process'
 
-import { bold, cyan, green, red, yellow } from 'ansis'
+import { bold, cyan, dim, green, red } from 'ansis'
 import { flatConfigsToRulesDTS } from 'eslint-typegen/core'
 import { builtinRules } from 'eslint/use-at-your-own-risk'
 
@@ -16,8 +16,6 @@ const OUTPUT_FILE = join(process.cwd(), 'src', 'typegen.d.ts')
  * Generate ESLint configurations with all features enabled
  */
 async function generateConfigs() {
-  console.log(yellow('⚙️  Generating ESLint configurations...'))
-
   const configs = await king3({
     gitignore: true,
     jsonc: true,
@@ -42,7 +40,7 @@ async function generateConfigs() {
     }
   })
 
-  console.log(green(`✅ Generated ${configs.length} configurations`))
+  console.log(dim('  ') + green(`✓ Generated ${configs.length} configurations`))
   return configs
 }
 
@@ -52,11 +50,9 @@ async function generateConfigs() {
 async function generateTypeDefinitions(
   configs: Awaited<ReturnType<typeof generateConfigs>>
 ) {
-  console.log(yellow('📝 Generating type definitions...'))
-
   // Extract config names
   const configNames = configs.map((i) => i.name).filter(Boolean) as string[]
-  console.log(green(`✅ Found ${configNames.length} named configs`))
+  console.log(dim('  ') + green(`✓ Found ${configNames.length} named configs`))
 
   // Generate DTS
   let dts = await flatConfigsToRulesDTS(configs, {
@@ -76,9 +72,8 @@ export type ConfigNames = ${configNames.map((i) => `'${i}'`).join(' | ')}
  * Write type definitions to file
  */
 async function writeTypeDefinitions(dts: string) {
-  console.log(yellow(`💾 Writing to ${OUTPUT_FILE}...`))
   await writeFile(OUTPUT_FILE, dts, 'utf-8')
-  console.log(green(`✅ Type definitions written successfully`))
+  console.log(dim('  ') + green('✓ Written to ') + cyan('src/typegen.d.ts'))
 }
 
 /**
@@ -95,16 +90,23 @@ function formatError(error: unknown): string {
  */
 async function typegen() {
   try {
-    console.log(bold(cyan('\n🚀 Starting typegen script...\n')))
+    console.log(bold(cyan('🚀 Starting type generation...\n')))
 
+    console.log(`${bold('Step 1: ')}Generating ESLint configurations`)
     const configs = await generateConfigs()
+
+    console.log(`${bold('\nStep 2: ')}Generating type definitions`)
     const dts = await generateTypeDefinitions(configs)
+
+    console.log(`${bold('\nStep 3: ')}Writing to file`)
     await writeTypeDefinitions(dts)
 
     console.log(bold(green('\n🎉 Type definitions generated successfully!\n')))
   } catch (error) {
     console.error(
-      `${bold(red('\n❌ Type generation failed: '))}${red(formatError(error))}\n`
+      `${
+        bold(red('\n❌ Type generation failed: ')) + red(formatError(error))
+      }\n`
     )
     process.exit(1)
   }
