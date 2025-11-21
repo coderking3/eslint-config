@@ -105,6 +105,7 @@
     "@eslint/config-inspector": "catalog:dev",
     "@king-3/prettier-config": "catalog:dev",
     "@next/eslint-plugin-next": "catalog:peer",
+    "@prettier/plugin-oxc": "catalog:dev",
     "@types/node": "catalog:dev",
     "@unocss/eslint-plugin": "catalog:peer",
     "ansis": "catalog:dev",
