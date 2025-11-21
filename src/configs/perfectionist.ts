@@ -2,10 +2,11 @@ import type { TypedFlatConfigItem } from '../types'
 
 import { pluginPerfectionist } from '../plugins'
 
-const sortSettings: Record<string, any> = {
+const SORT_OPTIONS: Record<string, any> = {
   order: 'asc',
+  partitionByComment: ['^Part:.*$'],
   type: 'natural'
-}
+} as const
 
 /**
  * Perfectionist plugin for props and items sorting.
@@ -15,15 +16,12 @@ const sortSettings: Record<string, any> = {
 export async function perfectionist(): Promise<TypedFlatConfigItem[]> {
   return [
     {
-      name: 'king3/perfectionist/setup',
+      name: 'king3/perfectionist',
       plugins: {
         perfectionist: pluginPerfectionist
-      }
-    },
-    {
-      name: 'king3/perfectionist/rules',
+      },
       rules: {
-        'perfectionist/sort-exports': ['warn', sortSettings],
+        'perfectionist/sort-exports': ['warn', SORT_OPTIONS],
         'perfectionist/sort-imports': [
           'warn',
           {
@@ -31,7 +29,6 @@ export async function perfectionist(): Promise<TypedFlatConfigItem[]> {
               ['external-type', 'builtin-type', 'type'],
               ['parent-type', 'sibling-type', 'index-type'],
               ['internal-type'],
-
               'builtin',
               'external',
               'internal',
@@ -42,14 +39,13 @@ export async function perfectionist(): Promise<TypedFlatConfigItem[]> {
               'object',
               'unknown'
             ],
-            internalPattern: ['^[~@#]/.*'],
-            newlinesBetween: 'ignore',
-            partitionByComment: ['^Part:.*$'],
-            ...sortSettings
+            internalPattern: ['^[@~#]/.*'],
+            newlinesBetween: 'always',
+            ...SORT_OPTIONS
           }
         ],
-        'perfectionist/sort-named-exports': ['warn', sortSettings],
-        'perfectionist/sort-named-imports': ['warn', sortSettings]
+        'perfectionist/sort-named-exports': ['warn', SORT_OPTIONS],
+        'perfectionist/sort-named-imports': ['warn', SORT_OPTIONS]
       }
     }
   ]
