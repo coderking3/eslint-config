@@ -17,10 +17,15 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
   },
   "publishConfig": {
     "access": "public"
@@ -28,6 +33,7 @@
   "scripts": {
     "dev": "npx @eslint/config-inspector --config eslint.config.ts",
     "build": "pnpm typegen && tsx scripts/build.ts",
+    "build:only": "tsx scripts/build.ts",
     "build:inspector": "pnpm build && npx @eslint/config-inspector build",
     "typegen": "tsx scripts/typegen.ts",
     "format": "prettier . --write",
