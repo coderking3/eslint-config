@@ -15,9 +15,6 @@ const eslintConfig = king3(
     prettier: true
   },
   {
-    ignores: ['fixtures', '_fixtures', '**/constants-generated.ts']
-  },
-  {
     files: ['src/**/*.ts'],
     rules: {
       'perfectionist/sort-objects': [
