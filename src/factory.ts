@@ -49,13 +49,18 @@ const flatConfigProps = [
 ] satisfies (keyof TypedFlatConfigItem)[]
 
 export const defaultPluginRenaming = {
+  '@eslint-react': 'react',
+  '@eslint-react/dom': 'react-dom',
+  '@eslint-react/hooks-extra': 'react-hooks-extra',
+  '@eslint-react/naming-convention': 'react-naming-convention',
+
+  '@next/next': 'next',
   '@typescript-eslint': 'typescript',
   'import-lite': 'import',
   n: 'node',
 
   yml: 'yaml'
 }
-
 /**
  * Construct an array of ESLint flat config items.
  *
