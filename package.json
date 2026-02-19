@@ -1,7 +1,7 @@
 {
   "name": "@king-3/eslint-config",
   "version": "4.4.0",
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.30.0",
   "description": "ESLint config for @king-3",
   "type": "module",
   "license": "MIT",
@@ -108,6 +108,7 @@
     "@types/node": "catalog:dev",
     "@unocss/eslint-plugin": "catalog:peer",
     "ansis": "catalog:dev",
+    "baseline-browser-mapping": "catalog:dev",
     "bumpp": "catalog:dev",
     "eslint": "catalog:peer",
     "eslint-plugin-react-hooks": "catalog:peer",
