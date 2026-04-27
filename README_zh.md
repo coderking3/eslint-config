@@ -59,20 +59,25 @@ import king3 from '@king-3/eslint-config'
 
 export default king3(
   {
-    // TypeScript 和 Vue 会自动检测，你也可以显式启用:
-    typescript: true,
-    vue: true,
-
-    // 禁用 jsonc 和 yaml 支持
-    jsonc: false,
-    yaml: false,
+    // 项目类型，'lib' 表示库，默认值为 'app'
+    type: 'lib',
 
     // Flat 配置不再支持 `.eslintignore`，请使用 `ignores` 代替
     ignores: [
       '**/fixtures',
       '**/dist'
       // ...globs
-    ]
+    ],
+
+    // 解析 `.gitignore` 文件以获取忽略项，默认启用
+    gitignore: true,
+    // TypeScript 和 Vue 会自动检测，你也可以显式启用:
+    typescript: true,
+    vue: true,
+
+    // 禁用 jsonc 和 yaml 支持
+    jsonc: false,
+    yaml: false
   },
   // 从第二个参数开始是 ESLint Flat 配置
   // 你可以有多个配置对象
@@ -106,6 +111,25 @@ export default king3({
 
 ```bash
 pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-hooks
+```
+
+#### Next.js
+
+要启用 Next.js 支持，您需要明确地将其开启：
+
+```js
+// eslint.config.js
+import king3 from '@king-3/eslint-config'
+
+export default king3({
+  nextjs: true
+})
+```
+
+运行 `npx eslint` 时，系统会提示您安装所需的依赖项；否则，您可以手动安装它们：
+
+```bash
+npm i -D @next/eslint-plugin-next
 ```
 
 #### UnoCSS
