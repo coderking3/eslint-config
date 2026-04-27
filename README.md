@@ -59,20 +59,26 @@ import king3 from '@king-3/eslint-config'
 
 export default king3(
   {
+    // Type of the project. 'lib' for libraries, the default is 'app'
+    type: 'lib',
+
+    // `.eslintignore` is no longer supported in Flat config, use `ignores` instead
+    ignores: [
+      '**/temp',
+      '**/dist'
+      // ...globs
+    ],
+
+    // Parse the `.gitignore` file to get the ignores, on by default
+    gitignore: true,
+
     // TypeScript and Vue are auto-detected, you can also explicitly enable them:
     typescript: true,
     vue: true,
 
     // Disable jsonc and yaml support
     jsonc: false,
-    yaml: false,
-
-    // `.eslintignore` is no longer supported in Flat config, use `ignores` instead
-    ignores: [
-      '**/fixtures',
-      '**/dist'
-      // ...globs
-    ]
+    yaml: false
   },
   // From the second arguments they are ESLint Flat Configs
   // you can have multiple configs
@@ -106,6 +112,25 @@ Install required dependencies:
 
 ```bash
 pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-hooks
+```
+
+#### Next.js
+
+To enable Next.js support, you need to explicitly turn it on:
+
+```js
+// eslint.config.js
+import king3 from '@king-3/eslint-config'
+
+export default king3({
+  nextjs: true
+})
+```
+
+Running `npx eslint` should prompt you to install the required dependencies, otherwise, you can install them manually:
+
+```bash
+npm i -D @next/eslint-plugin-next
 ```
 
 #### UnoCSS

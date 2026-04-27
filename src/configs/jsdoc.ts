@@ -1,14 +1,19 @@
 import type { TypedFlatConfigItem } from '../types'
+import { GLOB_SRC } from '../globs'
 
 import { interopDefault } from '../utils'
 
 export async function jsdoc(): Promise<TypedFlatConfigItem[]> {
   return [
     {
-      name: 'king3/jsdoc/rules',
+      name: 'king3/jsdoc/setup',
       plugins: {
         jsdoc: await interopDefault(import('eslint-plugin-jsdoc'))
-      },
+      }
+    },
+    {
+      files: [GLOB_SRC],
+      name: 'king3/jsdoc/rules',
       rules: {
         'jsdoc/check-access': 'warn',
         'jsdoc/check-param-names': 'warn',

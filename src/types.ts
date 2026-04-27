@@ -118,11 +118,91 @@ export interface OptionsHasTypeScript {
   typescript?: boolean
 }
 
-export type OptionsTypescript =
-  | (OptionsTypeScriptWithTypes & OptionsOverrides)
-  | (OptionsTypeScriptParserOptions & OptionsOverrides)
+export interface OptionsProjectType {
+  /**
+   * Type of the project. `lib` will enable more strict rules for libraries.
+   *
+   * @default 'app'
+   */
+  type?: 'app' | 'lib'
+}
 
-export interface OptionsConfig extends OptionsComponentExts {
+export interface OptionsTypeScriptErasableOnly {
+  /**
+   * Enable erasable syntax only rules.
+   *
+   * @see https://github.com/JoshuaKGoldberg/eslint-plugin-erasable-syntax-only
+   * @default false
+   */
+  erasableOnly?: boolean
+}
+
+export type OptionsTypescript =
+  | (OptionsTypeScriptWithTypes &
+      OptionsOverrides &
+      OptionsTypeScriptErasableOnly)
+  | (OptionsTypeScriptParserOptions &
+      OptionsOverrides &
+      OptionsTypeScriptErasableOnly)
+
+export interface OptionsE18e extends OptionsOverrides {
+  /**
+   * Include modernization rules.
+   *
+   * @see https://github.com/e18e/eslint-plugin#modernization
+   * @default true
+   */
+  modernization?: boolean
+
+  /**
+   * Include module replacements rules.
+   *
+   * @see https://github.com/e18e/eslint-plugin#module-replacements
+   * @default false
+   */
+  moduleReplacements?: boolean
+
+  /**
+   * Include performance improvements rules.
+   *
+   * @see https://github.com/e18e/eslint-plugin#performance-improvements
+   * @default true
+   */
+  performanceImprovements?: boolean
+}
+
+export interface OptionsPnpm {
+  /**
+   * Requires catalogs usage.
+   *
+   * Detects automatically based on if `catalogs` is used in the pnpm-workspace.yaml file.
+   */
+  catalogs?: boolean
+
+  /**
+   * Enable linting for package.json, will install the jsonc parser.
+   *
+   * @default true
+   */
+  json?: boolean
+
+  /**
+   * Enable linting for pnpm-workspace.yaml, will install the yaml parser.
+   *
+   * @default true
+   */
+  yaml?: boolean
+
+  /**
+   * Sort entries in pnpm-workspace.yaml.
+   *
+   * @default true
+   */
+  sort?: boolean
+}
+
+export interface OptionsConfig
+  extends OptionsComponentExts, OptionsProjectType {
   /**
    * Enable gitignore support.
    *
@@ -149,6 +229,27 @@ export interface OptionsConfig extends OptionsComponentExts {
   javascript?: OptionsOverrides
 
   /**
+   * Enable Node.js rules.
+   *
+   * @default true
+   */
+  node?: boolean
+
+  /**
+   * Enable JSDoc rules.
+   *
+   * @default true
+   */
+  jsdoc?: boolean
+
+  /**
+   * Enable eslint-plugin-import-lite rules.
+   *
+   * @default true
+   */
+  imports?: boolean | OptionsOverrides
+
+  /**
    * Enable TypeScript support.
    *
    * Passing an object to enable TypeScript Language Server support.
@@ -156,6 +257,14 @@ export interface OptionsConfig extends OptionsComponentExts {
    * @default auto-detect based on the dependencies
    */
   typescript?: boolean | OptionsTypescript
+
+  /**
+   * Options for @e18e/eslint-plugin.
+   *
+   * @see https://github.com/e18e/eslint-plugin
+   * @default true
+   */
+  e18e?: boolean | OptionsE18e
 
   /**
    * Options for eslint-plugin-unicorn.
@@ -245,14 +354,10 @@ export interface OptionsConfig extends OptionsComponentExts {
   /**
    * Enable pnpm (workspace/catalogs) support.
    *
-   * Currently it's disabled by default, as it's still experimental.
-   * In the future it will be smartly enabled based on the project usage.
-   *
    * @see https://github.com/antfu/pnpm-workspace-utils
-   * @experimental
-   * @default false
+   * @default auto-detect based on pnpm-workspace.yaml
    */
-  pnpm?: boolean
+  pnpm?: boolean | OptionsPnpm
 
   /**
    * Automatically rename plugins in the config.

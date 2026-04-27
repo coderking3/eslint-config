@@ -9,7 +9,7 @@ export async function sortPackageJson(): Promise<TypedFlatConfigItem[]> {
   return [
     {
       files: ['**/package.json'],
-      name: 'king3/sort/package.json',
+      name: 'antfu/sort/package-json',
       rules: {
         'jsonc/sort-array-values': [
           'error',
@@ -22,50 +22,51 @@ export async function sortPackageJson(): Promise<TypedFlatConfigItem[]> {
           'error',
           {
             order: [
+              'publisher',
               'name',
+              'displayName',
+              'type',
               'version',
               'private',
               'packageManager',
               'description',
-              'type',
-              'keywords',
-              'license',
-              'homepage',
-              'bugs',
-              'repository',
               'author',
               'contributors',
+              'license',
               'funding',
-              'files',
+              'homepage',
+              'repository',
+              'bugs',
+              'keywords',
+              'categories',
+              'sideEffects',
+              'imports',
+              'exports',
               'main',
               'module',
-              'types',
-              'exports',
-              'typesVersions',
-              'sideEffects',
               'unpkg',
               'jsdelivr',
-              'browser',
+              'types',
+              'typesVersions',
               'bin',
-              'man',
-              'directories',
-              'publishConfig',
+              'icon',
+              'files',
+              'engines',
+              'activationEvents',
+              'contributes',
               'scripts',
               'peerDependencies',
               'peerDependenciesMeta',
-              'optionalDependencies',
               'dependencies',
+              'optionalDependencies',
               'devDependencies',
-              'engines',
-              'config',
               'pnpm',
               'overrides',
               'resolutions',
               'husky',
               'simple-git-hooks',
               'lint-staged',
-              'eslintConfig',
-              'prettier'
+              'eslintConfig'
             ],
             pathPattern: '^$'
           },
@@ -75,12 +76,36 @@ export async function sortPackageJson(): Promise<TypedFlatConfigItem[]> {
               '^(?:dev|peer|optional|bundled)?[Dd]ependencies(Meta)?$'
           },
           {
-            order: ['types', 'require', 'import', 'default'],
-            pathPattern: '^exports.*$'
+            order: { type: 'asc' },
+            pathPattern: '^(?:resolutions|overrides|pnpm.overrides)$'
           },
           {
             order: { type: 'asc' },
-            pathPattern: String.raw`^(?:resolutions|overrides|pnpm\.overrides)$`
+            pathPattern: '^workspaces\\.catalog$'
+          },
+          {
+            order: { type: 'asc' },
+            pathPattern: '^workspaces\\.catalogs\\.[^.]+$'
+          },
+          {
+            order: ['types', 'import', 'require', 'default'],
+            pathPattern: '^exports.*$'
+          },
+          {
+            order: [
+              // client hooks only
+              'pre-commit',
+              'prepare-commit-msg',
+              'commit-msg',
+              'post-commit',
+              'pre-rebase',
+              'post-rewrite',
+              'post-checkout',
+              'post-merge',
+              'pre-push',
+              'pre-auto-gc'
+            ],
+            pathPattern: '^(?:gitHooks|husky|simple-git-hooks)$'
           }
         ]
       }
@@ -96,7 +121,7 @@ export async function sortPackageJson(): Promise<TypedFlatConfigItem[]> {
 export function sortTsconfig(): TypedFlatConfigItem[] {
   return [
     {
-      files: ['**/tsconfig.json', '**/tsconfig.*.json'],
+      files: ['**/[jt]sconfig.json', '**/[jt]sconfig.*.json'],
       name: 'king3/sort/tsconfig',
       rules: {
         'jsonc/sort-keys': [
@@ -134,6 +159,7 @@ export function sortTsconfig(): TypedFlatConfigItem[] {
               'useDefineForClassFields',
               'emitDecoratorMetadata',
               'experimentalDecorators',
+              'libReplacement',
               /* Modules */
               'baseUrl',
               'rootDir',
@@ -187,7 +213,6 @@ export function sortTsconfig(): TypedFlatConfigItem[] {
               'importsNotUsedAsValues',
               'inlineSourceMap',
               'inlineSources',
-              'isolatedDeclarations',
               'mapRoot',
               'newLine',
               'noEmit',
@@ -205,71 +230,16 @@ export function sortTsconfig(): TypedFlatConfigItem[] {
               'allowSyntheticDefaultImports',
               'esModuleInterop',
               'forceConsistentCasingInFileNames',
+              'isolatedDeclarations',
               'isolatedModules',
               'preserveSymlinks',
               'verbatimModuleSyntax',
+              'erasableSyntaxOnly',
               /* Completeness */
               'skipDefaultLibCheck',
               'skipLibCheck'
             ],
             pathPattern: '^compilerOptions$'
-          }
-        ]
-      }
-    }
-  ]
-}
-
-/**
- * Sort package.json
- *
- * Requires `yaml` config
- */
-export async function sortPnpmWorkspace(): Promise<TypedFlatConfigItem[]> {
-  return [
-    {
-      files: ['**/pnpm-workspace.yaml'],
-      name: 'king3/sort/pnpm-workspace',
-      rules: {
-        'yaml/sort-keys': [
-          'error',
-          {
-            order: [
-              'packages',
-              'overrides',
-              'patchedDependencies',
-              'hoistPattern',
-              'defines',
-              'catalog',
-              'catalogs',
-
-              'allowedDeprecatedVersions',
-              'allowNonAppliedPatches',
-              'configDependencies',
-              'ignoredBuiltDependencies',
-              'ignoredOptionalDependencies',
-              'neverBuiltDependencies',
-              'onlyBuiltDependencies',
-              'onlyBuiltDependenciesFile',
-              'packageExtensions',
-              'peerDependencyRules',
-              'supportedArchitectures'
-            ],
-            pathPattern: '^$'
-          },
-          {
-            allowLineSeparatedGroups: true,
-            order: { type: 'asc' },
-            pathPattern: '^catalog$'
-          },
-          {
-            order: { type: 'asc' },
-            pathPattern: `^catalogs$`
-          },
-          {
-            allowLineSeparatedGroups: true,
-            order: { type: 'asc' },
-            pathPattern: String.raw`^catalogs\..+$`
           }
         ]
       }

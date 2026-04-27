@@ -26,21 +26,20 @@ export async function perfectionist(): Promise<TypedFlatConfigItem[]> {
           'warn',
           {
             groups: [
-              ['external-type', 'builtin-type', 'type'],
-              ['parent-type', 'sibling-type', 'index-type'],
-              ['internal-type'],
-              'builtin',
-              'external',
-              'internal',
-              ['parent', 'sibling', 'index'],
+              'type-import',
+              ['type-parent', 'type-sibling', 'type-index', 'type-internal'],
+
+              'value-builtin',
+              'value-external',
+              'value-internal',
+              ['value-parent', 'value-sibling', 'value-index'],
               'side-effect',
-              'side-effect-style',
-              'style',
-              'object',
+              'ts-equals-import',
               'unknown'
             ],
             internalPattern: ['^[@~#]/.*'],
-            newlinesBetween: 'always',
+            newlinesBetween: 'ignore',
+            newlinesInside: 'ignore',
             ...SORT_OPTIONS
           }
         ],

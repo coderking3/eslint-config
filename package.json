@@ -1,32 +1,32 @@
 {
   "name": "@king-3/eslint-config",
+  "type": "module",
   "version": "5.0.0",
   "packageManager": "pnpm@10.30.0",
   "description": "ESLint config for @king-3",
-  "type": "module",
+  "author": "king3 <w2196592083@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/coderking3/eslint-config#readme",
-  "bugs": {
-    "url": "https://github.com/coderking3/eslint-config/issues"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/coderking3/eslint-config.git"
   },
-  "author": "king3 <w2196592083@gmail.com>",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/coderking3/eslint-config/issues"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     }
   },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -44,12 +44,12 @@
     "prepare": "simple-git-hooks"
   },
   "peerDependencies": {
-    "@eslint-react/eslint-plugin": "^2.0.1",
+    "@eslint-react/eslint-plugin": "^3.0.0",
     "@next/eslint-plugin-next": ">=15.0.0",
     "@unocss/eslint-plugin": ">=0.50.0",
-    "eslint": "^9.10.0",
-    "eslint-plugin-react-hooks": "^7.0.0",
-    "eslint-plugin-react-refresh": "^0.4.19"
+    "eslint": "^9.10.0 || ^10.0.0",
+    "eslint-plugin-erasable-syntax-only": ">=0.4.0",
+    "eslint-plugin-react-refresh": "^0.5.0"
   },
   "peerDependenciesMeta": {
     "@eslint-react/eslint-plugin": {
@@ -61,7 +61,7 @@
     "@unocss/eslint-plugin": {
       "optional": true
     },
-    "eslint-plugin-react-hooks": {
+    "eslint-plugin-erasable-syntax-only": {
       "optional": true
     },
     "eslint-plugin-react-refresh": {
@@ -71,6 +71,7 @@
   "dependencies": {
     "@antfu/install-pkg": "catalog:prod",
     "@clack/prompts": "catalog:prod",
+    "@e18e/eslint-plugin": "catalog:plugins",
     "@eslint-community/eslint-plugin-eslint-comments": "catalog:plugins",
     "@eslint/js": "catalog:prod",
     "@eslint/markdown": "catalog:prod",
@@ -93,6 +94,7 @@
     "eslint-plugin-unused-imports": "catalog:plugins",
     "eslint-plugin-vue": "catalog:plugins",
     "eslint-plugin-yml": "catalog:plugins",
+    "find-up-simple": "catalog:prod",
     "globals": "catalog:prod",
     "jsonc-eslint-parser": "catalog:parsers",
     "local-pkg": "catalog:prod",
@@ -111,7 +113,6 @@
     "baseline-browser-mapping": "catalog:dev",
     "bumpp": "catalog:dev",
     "eslint": "catalog:peer",
-    "eslint-plugin-react-hooks": "catalog:peer",
     "eslint-plugin-react-refresh": "catalog:peer",
     "eslint-typegen": "catalog:dev",
     "jiti": "catalog:dev",
@@ -122,7 +123,12 @@
     "typescript": "catalog:dev"
   },
   "resolutions": {
-    "eslint": "catalog:peer"
+    "@eslint-community/eslint-utils": "catalog:peer",
+    "@typescript-eslint/types": "catalog:peer",
+    "@typescript-eslint/utils": "catalog:peer",
+    "eslint": "catalog:peer",
+    "synckit": "catalog:peer",
+    "tsx": "catalog:dev"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

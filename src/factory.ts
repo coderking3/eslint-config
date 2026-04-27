@@ -9,10 +9,13 @@ import type {
 } from './types'
 
 import { FlatConfigComposer } from 'eslint-flat-config-utils'
+import { findUpSync } from 'find-up-simple'
 
 import {
   command,
   comments,
+  disables,
+  e18e,
   ignores,
   imports,
   javascript,
@@ -27,7 +30,6 @@ import {
   react,
   regexp,
   sortPackageJson,
-  sortPnpmWorkspace,
   sortTsconfig,
   typescript,
   unicorn,
@@ -51,8 +53,9 @@ const flatConfigProps = [
 export const defaultPluginRenaming = {
   '@eslint-react': 'react',
   '@eslint-react/dom': 'react-dom',
-  '@eslint-react/hooks-extra': 'react-hooks-extra',
   '@eslint-react/naming-convention': 'react-naming-convention',
+  '@eslint-react/rsc': 'react-rsc',
+  '@eslint-react/web-api': 'react-web-api',
 
   '@next/next': 'next',
   '@typescript-eslint': 'typescript',
@@ -72,7 +75,7 @@ export const defaultPluginRenaming = {
  *  The merged ESLint configurations.
  */
 export function king3(
-  options: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {},
+  options: OptionsConfig & Omit<TypedFlatConfigItem, 'files' | 'ignores'> = {},
   ...userConfigs: Awaitable<
     | TypedFlatConfigItem
     | TypedFlatConfigItem[]
@@ -83,10 +86,14 @@ export function king3(
   const {
     autoRenamePlugins = true,
     componentExts = [],
+    e18e: enableE18e = true,
     gitignore: enableGitignore = true,
     ignores: userIgnores = [],
+    imports: enableImports = true,
+    jsdoc: enableJsdoc = true,
     nextjs: enableNextjs = false,
-    pnpm: enableCatalogs = false,
+    node: enableNode = true,
+    pnpm: enableCatalogs = !!findUpSync('pnpm-workspace.yaml'),
     prettier: enablePrettier = true,
     react: enableReact = hasReact(),
     regexp: enableRegexp = true,
@@ -130,17 +137,30 @@ export function king3(
   configs.push(
     command(),
     comments(),
-    imports(),
     ignores(userIgnores),
     javascript({
       overrides: getOverrides(options, 'javascript')
     }),
-    jsdoc(),
-    node(),
 
     // Optional plugins (installed but not enabled by default)
     perfectionist()
   )
+
+  if (enableImports) {
+    configs.push(imports())
+  }
+
+  if (enableJsdoc) {
+    configs.push(jsdoc())
+  }
+
+  if (enableNode) {
+    configs.push(node())
+  }
+
+  if (enableE18e) {
+    configs.push(e18e(enableE18e === true ? {} : enableE18e))
+  }
 
   if (enableUnicorn) {
     configs.push(unicorn(enableUnicorn === true ? {} : enableUnicorn))
@@ -159,7 +179,8 @@ export function king3(
       typescript({
         ...typescriptOptions,
         componentExts,
-        overrides: getOverrides(options, 'typescript')
+        overrides: getOverrides(options, 'typescript'),
+        type: options.type
       })
     )
   }
@@ -214,13 +235,19 @@ export function king3(
         overrides: getOverrides(options, 'jsonc')
       }),
       sortPackageJson(),
-      sortTsconfig(),
-      sortPnpmWorkspace()
+      sortTsconfig()
     )
   }
 
   if (enableCatalogs) {
-    configs.push(pnpm())
+    const optionsPnpm = resolveSubOptions(options, 'pnpm')
+    configs.push(
+      pnpm({
+        json: options.jsonc !== false,
+        yaml: options.yaml !== false,
+        ...optionsPnpm
+      })
+    )
   }
 
   if (options.yaml ?? true) {
@@ -237,6 +264,14 @@ export function king3(
         componentExts,
         overrides: getOverrides(options, 'markdown')
       })
+    )
+  }
+
+  configs.push(disables())
+
+  if ('files' in options) {
+    throw new Error(
+      '[@king-3/eslint-config] The first argument should not contain the "files" property as the options are supposed to be global. Place it in the second or later config instead.'
     )
   }
 

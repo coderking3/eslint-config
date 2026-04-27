@@ -1,7 +1,6 @@
 import type {
   OptionsFiles,
   OptionsOverrides,
-  Rules,
   TypedFlatConfigItem
 } from '../types'
 
@@ -32,9 +31,13 @@ export async function yaml(
       },
       name: 'king3/yaml/rules',
       rules: {
-        ...(pluginYaml.configs.standard.rules as Rules),
-        ...(pluginYaml.configs.prettier.rules as Rules),
+        'yaml/block-mapping': 'error',
+        'yaml/block-sequence': 'error',
+        'yaml/no-empty-key': 'error',
         'yaml/no-empty-mapping-value': 'off',
+        'yaml/no-empty-sequence-entry': 'error',
+        'yaml/no-irregular-whitespace': 'error',
+        'yaml/plain-scalar': 'error',
 
         ...overrides
       }

@@ -1,6 +1,8 @@
 import { isPackageExists } from 'local-pkg'
 
-export const hasTypeScript = (): boolean => isPackageExists('typescript')
+const TsPackages = ['typescript', '@typescript/native-preview']
+export const hasTypeScript = (): boolean =>
+  TsPackages.some((i) => isPackageExists(i))
 
 const VuePackages = ['vue', 'nuxt', 'vitepress', '@slidev/cli']
 export const hasVue = (): boolean => VuePackages.some((i) => isPackageExists(i))
