@@ -21,7 +21,6 @@ catalogs:
     typescript: ^6.0.2
   parsers:
     '@typescript-eslint/parser': ^8.58.1
-    jsonc-eslint-parser: ^3.1.0
     vue-eslint-parser: ^10.4.0
     yaml-eslint-parser: ^2.0.0
   peer:
