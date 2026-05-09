@@ -9,7 +9,7 @@ export async function sortPackageJson(): Promise<TypedFlatConfigItem[]> {
   return [
     {
       files: ['**/package.json'],
-      name: 'antfu/sort/package-json',
+      name: 'king3/sort/package-json',
       rules: {
         'jsonc/sort-array-values': [
           'error',
