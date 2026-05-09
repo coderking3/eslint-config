@@ -27,19 +27,23 @@ export async function perfectionist(): Promise<TypedFlatConfigItem[]> {
           {
             groups: [
               'type-import',
-              ['type-parent', 'type-sibling', 'type-index', 'type-internal'],
+              ['type-external', 'type-builtin'],
+              ['type-parent', 'type-sibling', 'type-index'],
+              ['type-internal'],
 
               'value-builtin',
               'value-external',
               'value-internal',
               ['value-parent', 'value-sibling', 'value-index'],
               'side-effect',
+              'side-effect-style',
+              'style',
               'ts-equals-import',
               'unknown'
             ],
             internalPattern: ['^[@~#]/.*'],
-            newlinesBetween: 'ignore',
-            newlinesInside: 'ignore',
+            newlinesBetween: 1,
+            newlinesInside: 0,
             ...SORT_OPTIONS
           }
         ],
