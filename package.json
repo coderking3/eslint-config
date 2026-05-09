@@ -1,7 +1,7 @@
 {
   "name": "@king-3/eslint-config",
   "type": "module",
-  "version": "6.0.1",
+  "version": "6.1.0",
   "packageManager": "pnpm@10.30.0",
   "description": "ESLint config for @king-3",
   "author": "king3 <w2196592083@gmail.com>",
