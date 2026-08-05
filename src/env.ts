@@ -1,14 +1,13 @@
 import { isPackageExists } from 'local-pkg'
 
-export const hasTypeScript = (): boolean => isPackageExists('typescript')
+const TsPackages = ['typescript', '@typescript/native-preview']
+export const hasTypeScript = () => TsPackages.some((i) => isPackageExists(i))
 
 const VuePackages = ['vue', 'nuxt', 'vitepress', '@slidev/cli']
-export const hasVue = (): boolean => VuePackages.some((i) => isPackageExists(i))
+export const hasVue = () => VuePackages.some((i) => isPackageExists(i))
 
 const ReactPackages = ['react', 'react-dom']
-
-export const hasReact = (): boolean =>
-  ReactPackages.some((i) => isPackageExists(i))
+export const hasReact = () => ReactPackages.some((i) => isPackageExists(i))
 
 const UnoCSSPackages = [
   'unocss',
@@ -16,5 +15,4 @@ const UnoCSSPackages = [
   '@unocss/nuxt',
   '@unocss/eslint-plugin'
 ]
-export const hasUnoCSS = (): boolean =>
-  UnoCSSPackages.some((i) => isPackageExists(i))
+export const hasUnoCSS = () => UnoCSSPackages.some((i) => isPackageExists(i))

@@ -1,55 +1,53 @@
 {
-  "name": "@king-3/eslint-config",
-  "version": "5.0.0",
-  "packageManager": "pnpm@10.30.0",
-  "description": "ESLint config for @king-3",
+  "name": "@king3/eslint-config",
   "type": "module",
+  "version": "6.1.0",
+  "packageManager": "pnpm@11.15.1",
+  "description": "King3's ESLint config",
+  "author": "king3 <king3.wm@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/coderking3/eslint-config#readme",
-  "bugs": {
-    "url": "https://github.com/coderking3/eslint-config/issues"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/coderking3/eslint-config.git"
   },
-  "author": "king3 <w2196592083@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/coderking3/eslint-config/issues"
+  },
+  "keywords": [
+    "eslint-config"
+  ],
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
-    }
-  },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "dev": "npx @eslint/config-inspector --config eslint.config.ts",
-    "build": "pnpm typegen && tsx scripts/build.ts",
-    "build:only": "tsx scripts/build.ts",
+    "build": "pnpm typegen && tsdown",
     "build:inspector": "pnpm build && npx @eslint/config-inspector build",
     "typegen": "tsx scripts/typegen.ts",
-    "format": "prettier . --write",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix",
-    "release": "bumpp",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "typecheck": "tsc --noEmit",
+    "release": "bumpp",
+    "prepublishOnly": "pnpm build",
     "prepare": "simple-git-hooks"
   },
   "peerDependencies": {
-    "@eslint-react/eslint-plugin": "^2.0.1",
+    "@eslint-react/eslint-plugin": "^5.6.0",
     "@next/eslint-plugin-next": ">=15.0.0",
     "@unocss/eslint-plugin": ">=0.50.0",
-    "eslint": "^9.10.0",
-    "eslint-plugin-react-hooks": "^7.0.0",
-    "eslint-plugin-react-refresh": "^0.4.19"
+    "eslint": "^9.10.0 || ^10.0.0",
+    "eslint-plugin-erasable-syntax-only": ">=0.4.0",
+    "eslint-plugin-react-refresh": "^0.5.0"
   },
   "peerDependenciesMeta": {
     "@eslint-react/eslint-plugin": {
@@ -61,7 +59,7 @@
     "@unocss/eslint-plugin": {
       "optional": true
     },
-    "eslint-plugin-react-hooks": {
+    "eslint-plugin-erasable-syntax-only": {
       "optional": true
     },
     "eslint-plugin-react-refresh": {
@@ -71,6 +69,7 @@
   "dependencies": {
     "@antfu/install-pkg": "catalog:prod",
     "@clack/prompts": "catalog:prod",
+    "@e18e/eslint-plugin": "catalog:plugins",
     "@eslint-community/eslint-plugin-eslint-comments": "catalog:plugins",
     "@eslint/js": "catalog:prod",
     "@eslint/markdown": "catalog:prod",
@@ -79,6 +78,7 @@
     "eslint-config-flat-gitignore": "catalog:prod",
     "eslint-config-prettier": "catalog:prod",
     "eslint-flat-config-utils": "catalog:prod",
+    "eslint-merge-processors": "catalog:prod",
     "eslint-plugin-antfu": "catalog:plugins",
     "eslint-plugin-command": "catalog:plugins",
     "eslint-plugin-import-lite": "catalog:plugins",
@@ -93,36 +93,32 @@
     "eslint-plugin-unused-imports": "catalog:plugins",
     "eslint-plugin-vue": "catalog:plugins",
     "eslint-plugin-yml": "catalog:plugins",
+    "eslint-processor-vue-blocks": "catalog:prod",
+    "find-up-simple": "catalog:prod",
     "globals": "catalog:prod",
-    "jsonc-eslint-parser": "catalog:parsers",
     "local-pkg": "catalog:prod",
-    "prettier": "catalog:prod",
     "vue-eslint-parser": "catalog:parsers",
     "yaml-eslint-parser": "catalog:parsers"
   },
   "devDependencies": {
     "@eslint-react/eslint-plugin": "catalog:peer",
     "@eslint/config-inspector": "catalog:dev",
-    "@king-3/prettier-config": "catalog:dev",
+    "@king3/prettier-config": "catalog:dev",
     "@next/eslint-plugin-next": "catalog:peer",
     "@types/node": "catalog:dev",
     "@unocss/eslint-plugin": "catalog:peer",
-    "ansis": "catalog:dev",
     "baseline-browser-mapping": "catalog:dev",
     "bumpp": "catalog:dev",
     "eslint": "catalog:peer",
-    "eslint-plugin-react-hooks": "catalog:peer",
     "eslint-plugin-react-refresh": "catalog:peer",
     "eslint-typegen": "catalog:dev",
     "jiti": "catalog:dev",
     "lint-staged": "catalog:dev",
+    "prettier": "catalog:dev",
     "simple-git-hooks": "catalog:dev",
     "tsdown": "catalog:dev",
     "tsx": "catalog:dev",
     "typescript": "catalog:dev"
-  },
-  "resolutions": {
-    "eslint": "catalog:peer"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

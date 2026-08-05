@@ -5,7 +5,7 @@ export const GLOB_JS = '**/*.?([cm])js'
 export const GLOB_JSX = '**/*.?([cm])jsx'
 
 export const GLOB_TS = '**/*.?([cm])ts'
-export const GLOB_TSX = '**/*.tsx'
+export const GLOB_TSX = '**/*.?([cm])tsx'
 
 export const GLOB_STYLE = '**/*.{c,le,sc}ss'
 export const GLOB_CSS = '**/*.css'
@@ -17,6 +17,7 @@ export const GLOB_JSON5 = '**/*.json5'
 export const GLOB_JSONC = '**/*.jsonc'
 
 export const GLOB_MARKDOWN = '**/*.md'
+export const GLOB_MARKDOWN_IN_MARKDOWN = '**/*.md/*.md'
 export const GLOB_VUE = '**/*.vue'
 export const GLOB_YAML = '**/*.y?(a)ml'
 export const GLOB_HTML = '**/*.htm?(l)'
@@ -47,23 +48,37 @@ export const GLOB_EXCLUDE: string[] = [
   GLOB_DIST,
   ...GLOB_LOCKFILE,
 
-  'output',
+  '**/output',
   '**/coverage',
   '**/temp',
-  '**/fixtures',
+  '**/.temp',
+  '**/tmp',
+  '**/.tmp',
+  '**/.history',
   '**/.vitepress/cache',
   '**/.nuxt',
+  '**/.next',
   '**/.vercel',
   '**/.changeset',
   '**/.idea',
+  '**/.cache',
   '**/.output',
   '**/.vite-inspect',
-  '**/.nitro',
+  '**/.yarn',
 
   '**/CHANGELOG*.md',
-  '**/*.min.*',
   '**/LICENSE*',
+  '**/*.min.*',
   '**/__snapshots__',
+
+  // Tools temp files
+  '**/vite.config.*.timestamp-*',
   '**/auto-import?(s).d.ts',
-  '**/components.d.ts'
+  '**/components.d.ts',
+
+  // AI related
+  '**/.context',
+  '**/.claude',
+  '**/.agents',
+  '**/.*/skills'
 ]

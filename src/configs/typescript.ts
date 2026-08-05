@@ -1,7 +1,11 @@
+import type { Linter } from 'eslint'
+
 import type {
   OptionsComponentExts,
   OptionsFiles,
   OptionsOverrides,
+  OptionsProjectType,
+  OptionsTypeScriptErasableOnly,
   OptionsTypeScriptParserOptions,
   OptionsTypeScriptWithTypes,
   TypedFlatConfigItem
@@ -17,13 +21,17 @@ export async function typescript(
     OptionsComponentExts &
     OptionsOverrides &
     OptionsTypeScriptWithTypes &
-    OptionsTypeScriptParserOptions = {}
+    OptionsTypeScriptParserOptions &
+    OptionsProjectType &
+    OptionsTypeScriptErasableOnly = {}
 ): Promise<TypedFlatConfigItem[]> {
   const {
     componentExts = [],
+    erasableOnly = false,
     overrides = {},
     overridesTypeAware = {},
-    parserOptions = {}
+    parserOptions = {},
+    type = 'app'
   } = options
 
   const files = options.files ?? [
@@ -41,12 +49,7 @@ export async function typescript(
     'dot-notation': 'off',
     'no-implied-eval': 'off',
     'typescript/await-thenable': 'error',
-    'typescript/consistent-type-imports': [
-      'error',
-      { disallowTypeAnnotations: false, prefer: 'type-imports' }
-    ],
     'typescript/dot-notation': ['error', { allowKeywords: true }],
-    'typescript/no-duplicate-imports': 'error',
     'typescript/no-floating-promises': 'error',
     'typescript/no-for-in-array': 'error',
     'typescript/no-implied-eval': 'error',
@@ -179,6 +182,18 @@ export async function typescript(
         'typescript/triple-slash-reference': 'off',
         'typescript/unified-signatures': 'off',
 
+        ...(type === 'lib'
+          ? {
+              'typescript/explicit-function-return-type': [
+                'error',
+                {
+                  allowExpressions: true,
+                  allowHigherOrderFunctions: true,
+                  allowIIFEs: true
+                }
+              ]
+            }
+          : {}),
         ...overrides
       }
     },
@@ -192,6 +207,24 @@ export async function typescript(
               ...typeAwareRules,
               ...overridesTypeAware
             }
+          }
+        ]
+      : []),
+    ...(erasableOnly
+      ? [
+          {
+            name: 'king3/typescript/erasable-syntax-only',
+            plugins: {
+              'erasable-syntax-only': await interopDefault(
+                import('eslint-plugin-erasable-syntax-only')
+              )
+            },
+            rules: {
+              'erasable-syntax-only/enums': 'error',
+              'erasable-syntax-only/import-aliases': 'error',
+              'erasable-syntax-only/namespaces': 'error',
+              'erasable-syntax-only/parameter-properties': 'error'
+            } as Record<string, Linter.RuleEntry>
           }
         ]
       : [])

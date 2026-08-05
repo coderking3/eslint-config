@@ -1,11 +1,10 @@
-/* eslint-disable no-console */
 import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import process from 'node:process'
 
-import { bold, cyan, dim, green, red } from 'ansis'
 import { flatConfigsToRulesDTS } from 'eslint-typegen/core'
 import { builtinRules } from 'eslint/use-at-your-own-risk'
+import { globalLogger } from 'tsdown'
 
 import { king3 } from '../src/factory'
 
@@ -40,7 +39,7 @@ async function generateConfigs() {
     }
   })
 
-  console.log(dim('  ') + green(`✓ Generated ${configs.length} configurations`))
+  globalLogger.info(`Generated ${configs.length} configurations`)
   return configs
 }
 
@@ -52,7 +51,7 @@ async function generateTypeDefinitions(
 ) {
   // Extract config names
   const configNames = configs.map((i) => i.name).filter(Boolean) as string[]
-  console.log(dim('  ') + green(`✓ Found ${configNames.length} named configs`))
+  globalLogger.info(`Found ${configNames.length} named configs`)
 
   // Generate DTS
   let dts = await flatConfigsToRulesDTS(configs, {
@@ -73,7 +72,7 @@ export type ConfigNames = ${configNames.map((i) => `'${i}'`).join(' | ')}
  */
 async function writeTypeDefinitions(dts: string) {
   await writeFile(OUTPUT_FILE, dts, 'utf-8')
-  console.log(dim('  ') + green('✓ Written to ') + cyan('src/typegen.d.ts'))
+  globalLogger.info('Written to src/typegen.d.ts')
 }
 
 /**
@@ -90,25 +89,17 @@ function formatError(error: unknown): string {
  */
 async function typegen() {
   try {
-    console.log(bold(cyan('🚀 Starting type generation...\n')))
-
-    console.log(`${bold('Step 1: ')}Generating ESLint configurations`)
+    globalLogger.info('Type generation start')
     const configs = await generateConfigs()
 
-    console.log(`${bold('\nStep 2: ')}Generating type definitions`)
     const dts = await generateTypeDefinitions(configs)
 
-    console.log(`${bold('\nStep 3: ')}Writing to file`)
     await writeTypeDefinitions(dts)
 
-    console.log(bold(green('\n🎉 Type definitions generated successfully!\n')))
+    globalLogger.success('Type generation complete')
   } catch (error) {
-    console.error(
-      `${
-        bold(red('\n❌ Type generation failed: ')) + red(formatError(error))
-      }\n`
-    )
-    process.exit(1)
+    globalLogger.error('Type generation failed:', formatError(error))
+    process.exitCode = 1
   }
 }
 

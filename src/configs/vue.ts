@@ -1,21 +1,26 @@
 import type {
   OptionsFiles,
   OptionsHasTypeScript,
-  OptionsOverrides,
+  OptionsVue,
   TypedFlatConfigItem
 } from '../types'
+
+import { mergeProcessors } from 'eslint-merge-processors'
 
 import { GLOB_VUE } from '../globs'
 import { interopDefault } from '../utils'
 
 export async function vue(
-  options: OptionsHasTypeScript & OptionsOverrides & OptionsFiles = {}
+  options: OptionsVue & OptionsHasTypeScript & OptionsFiles = {}
 ): Promise<TypedFlatConfigItem[]> {
   const { files = [GLOB_VUE], overrides = {} } = options
 
-  const [pluginVue, parserVue] = await Promise.all([
+  const sfcBlocks = options.sfcBlocks === true ? {} : (options.sfcBlocks ?? {})
+
+  const [pluginVue, parserVue, processorVueBlocks] = await Promise.all([
     interopDefault(import('eslint-plugin-vue')),
-    interopDefault(import('vue-eslint-parser'))
+    interopDefault(import('vue-eslint-parser')),
+    interopDefault(import('eslint-processor-vue-blocks'))
   ] as const)
 
   return [
@@ -62,15 +67,35 @@ export async function vue(
         }
       },
       name: 'king3/vue/rules',
-      processor: pluginVue.processors['.vue'],
+      processor:
+        sfcBlocks === false
+          ? pluginVue.processors['.vue']
+          : mergeProcessors([
+              pluginVue.processors['.vue'],
+              processorVueBlocks({
+                ...sfcBlocks,
+                blocks: {
+                  styles: true,
+                  ...sfcBlocks.blocks
+                }
+              })
+            ]),
       rules: {
         ...(pluginVue.configs.base.rules as any),
 
+        ...(pluginVue.configs['flat/essential']
+          .map((c) => c.rules)
+          .reduce((acc, c) => ({ ...acc, ...c }), {}) as any),
+        ...(pluginVue.configs['flat/strongly-recommended']
+          .map((c) => c.rules)
+          .reduce((acc, c) => ({ ...acc, ...c }), {}) as any),
         ...(pluginVue.configs['flat/recommended']
           .map((c) => c.rules)
           .reduce((acc, c) => ({ ...acc, ...c }), {}) as any),
 
+        'antfu/no-top-level-await': 'off',
         'node/prefer-global/process': 'off',
+        'typescript/explicit-function-return-type': 'off',
 
         'vue/block-order': [
           'error',
@@ -92,24 +117,16 @@ export async function vue(
             ]
           }
         ],
+        'vue/dot-location': ['error', 'property'],
+        'vue/dot-notation': ['error', { allowKeywords: true }],
         'vue/eqeqeq': ['error', 'smart'],
+        'vue/html-indent': ['error', 2],
         'vue/html-quotes': ['error', 'double'],
-        'vue/html-self-closing': [
-          'error',
-          {
-            html: {
-              component: 'always',
-              normal: 'always',
-              void: 'any'
-            },
-            math: 'always',
-            svg: 'always'
-          }
-        ],
         'vue/max-attributes-per-line': 'off',
         'vue/multi-word-component-names': 'off',
-        'vue/no-constant-condition': 'warn',
+        'vue/no-dupe-keys': 'off',
         'vue/no-empty-pattern': 'error',
+        'vue/no-irregular-whitespace': 'error',
         'vue/no-loss-of-precision': 'error',
         'vue/no-restricted-syntax': [
           'error',
@@ -117,7 +134,9 @@ export async function vue(
           'LabeledStatement',
           'WithStatement'
         ],
+        'vue/no-restricted-v-bind': ['error', '/^v-/'],
         'vue/no-setup-props-reactivity-loss': 'off',
+        'vue/no-sparse-arrays': 'error',
         'vue/no-unused-refs': 'error',
         'vue/no-useless-v-bind': 'error',
         'vue/no-v-html': 'off',
@@ -129,10 +148,13 @@ export async function vue(
             ignoreConstructors: false
           }
         ],
+        'vue/prefer-separate-static-class': 'error',
         'vue/prefer-template': 'error',
         'vue/prop-name-casing': ['error', 'camelCase'],
         'vue/require-default-prop': 'off',
         'vue/require-prop-types': 'off',
+        'vue/space-infix-ops': 'error',
+        'vue/space-unary-ops': ['error', { nonwords: false, words: true }],
 
         ...overrides
       }

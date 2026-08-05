@@ -1,6 +1,6 @@
 import { king3 } from './src/index'
 
-const eslintConfig = king3(
+const eslint_config = king3(
   {
     vue: true,
     react: true,
@@ -28,4 +28,4 @@ const eslintConfig = king3(
   }
 )
 
-export default eslintConfig
+export default eslint_config

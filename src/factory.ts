@@ -9,10 +9,13 @@ import type {
 } from './types'
 
 import { FlatConfigComposer } from 'eslint-flat-config-utils'
+import { findUpSync } from 'find-up-simple'
 
 import {
   command,
   comments,
+  disables,
+  e18e,
   ignores,
   imports,
   javascript,
@@ -27,7 +30,6 @@ import {
   react,
   regexp,
   sortPackageJson,
-  sortPnpmWorkspace,
   sortTsconfig,
   typescript,
   unicorn,
@@ -36,6 +38,7 @@ import {
   yaml
 } from './configs'
 import { hasReact, hasTypeScript, hasUnoCSS, hasVue } from './env'
+import { GLOB_MARKDOWN } from './globs'
 import { interopDefault } from './utils'
 
 const flatConfigProps = [
@@ -50,9 +53,6 @@ const flatConfigProps = [
 
 export const defaultPluginRenaming = {
   '@eslint-react': 'react',
-  '@eslint-react/dom': 'react-dom',
-  '@eslint-react/hooks-extra': 'react-hooks-extra',
-  '@eslint-react/naming-convention': 'react-naming-convention',
 
   '@next/next': 'next',
   '@typescript-eslint': 'typescript',
@@ -72,7 +72,7 @@ export const defaultPluginRenaming = {
  *  The merged ESLint configurations.
  */
 export function king3(
-  options: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {},
+  options: OptionsConfig & Omit<TypedFlatConfigItem, 'files' | 'ignores'> = {},
   ...userConfigs: Awaitable<
     | TypedFlatConfigItem
     | TypedFlatConfigItem[]
@@ -83,13 +83,19 @@ export function king3(
   const {
     autoRenamePlugins = true,
     componentExts = [],
+    e18e: enableE18e = true,
     gitignore: enableGitignore = true,
     ignores: userIgnores = [],
+    imports: enableImports = true,
+    jsdoc: enableJsdoc = true,
     nextjs: enableNextjs = false,
-    pnpm: enableCatalogs = false,
+    node: enableNode = true,
+    perfectionist: enablePerfectionist = true,
+    pnpm: enableCatalogs = !!findUpSync('pnpm-workspace.yaml'),
     prettier: enablePrettier = true,
     react: enableReact = hasReact(),
     regexp: enableRegexp = true,
+    type: appType = 'app',
     typescript: enableTypeScript = hasTypeScript(),
     unicorn: enableUnicorn = true,
     unocss: enableUnoCSS = hasUnoCSS(),
@@ -128,19 +134,39 @@ export function king3(
 
   // Base configs
   configs.push(
-    command(),
-    comments(),
-    imports(),
-    ignores(userIgnores),
+    ignores(userIgnores, !enableTypeScript),
     javascript({
       overrides: getOverrides(options, 'javascript')
     }),
-    jsdoc(),
-    node(),
-
-    // Optional plugins (installed but not enabled by default)
-    perfectionist()
+    comments(),
+    command()
   )
+
+  if (enablePerfectionist) {
+    configs.push(
+      perfectionist({
+        overrides: getOverrides(options, 'perfectionist')
+      })
+    )
+  }
+  if (enableNode) {
+    configs.push(node())
+  }
+  if (enableJsdoc) {
+    configs.push(jsdoc())
+  }
+
+  if (enableImports) {
+    configs.push(
+      imports({
+        ...resolveSubOptions(options, 'imports')
+      })
+    )
+  }
+
+  if (enableE18e) {
+    configs.push(e18e(enableE18e === true ? {} : enableE18e))
+  }
 
   if (enableUnicorn) {
     configs.push(unicorn(enableUnicorn === true ? {} : enableUnicorn))
@@ -150,16 +176,13 @@ export function king3(
     componentExts.push('vue')
   }
 
-  // if (enableJsx) {
-  //   configs.push(jsx(enableJsx === true ? {} : enableJsx))
-  // }
-
   if (enableTypeScript) {
     configs.push(
       typescript({
         ...typescriptOptions,
         componentExts,
-        overrides: getOverrides(options, 'typescript')
+        overrides: getOverrides(options, 'typescript'),
+        type: appType
       })
     )
   }
@@ -171,6 +194,7 @@ export function king3(
   if (enableVue) {
     configs.push(
       vue({
+        ...resolveSubOptions(options, 'vue'),
         overrides: getOverrides(options, 'vue'),
         typescript: !!enableTypeScript
       })
@@ -181,6 +205,7 @@ export function king3(
     configs.push(
       react({
         ...typescriptOptions,
+        ...resolveSubOptions(options, 'react'),
         overrides: getOverrides(options, 'react'),
         tsconfigPath
       })
@@ -204,23 +229,25 @@ export function king3(
     )
   }
 
-  if (enablePrettier) {
-    configs.push(prettier())
-  }
-
   if (options.jsonc ?? true) {
     configs.push(
       jsonc({
         overrides: getOverrides(options, 'jsonc')
       }),
       sortPackageJson(),
-      sortTsconfig(),
-      sortPnpmWorkspace()
+      sortTsconfig()
     )
   }
 
   if (enableCatalogs) {
-    configs.push(pnpm())
+    const optionsPnpm = resolveSubOptions(options, 'pnpm')
+    configs.push(
+      pnpm({
+        json: options.jsonc !== false,
+        yaml: options.yaml !== false,
+        ...optionsPnpm
+      })
+    )
   }
 
   if (options.yaml ?? true) {
@@ -240,6 +267,18 @@ export function king3(
     )
   }
 
+  if (enablePrettier) {
+    configs.push(prettier())
+  }
+
+  configs.push(disables())
+
+  if ('files' in options) {
+    throw new Error(
+      '[@king3/eslint-config] The first argument should not contain the "files" property as the options are supposed to be global. Place it in the second or later config instead.'
+    )
+  }
+
   // User can optionally pass a flat config item to the first argument
   // We pick the known keys as ESLint would do schema validation
   const fusedConfig = flatConfigProps.reduce((acc, key) => {
@@ -251,6 +290,10 @@ export function king3(
   let composer = new FlatConfigComposer<TypedFlatConfigItem, ConfigNames>()
 
   composer = composer.append(...configs, ...(userConfigs as any))
+
+  if (options.markdown ?? true) {
+    composer = composer.setDefaultIgnores((prev) => [...prev, GLOB_MARKDOWN])
+  }
 
   if (autoRenamePlugins) {
     composer = composer.renamePlugins(defaultPluginRenaming)

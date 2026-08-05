@@ -1,4 +1,4 @@
-import type { TypedFlatConfigItem } from '../types'
+import type { OptionsOverrides, TypedFlatConfigItem } from '../types'
 
 import { pluginPerfectionist } from '../plugins'
 
@@ -13,7 +13,11 @@ const SORT_OPTIONS: Record<string, any> = {
  *
  * @see https://github.com/azat-io/eslint-plugin-perfectionist
  */
-export async function perfectionist(): Promise<TypedFlatConfigItem[]> {
+export async function perfectionist(
+  options: OptionsOverrides = {}
+): Promise<TypedFlatConfigItem[]> {
+  const { overrides = {} } = options
+
   return [
     {
       name: 'king3/perfectionist',
@@ -26,26 +30,31 @@ export async function perfectionist(): Promise<TypedFlatConfigItem[]> {
           'warn',
           {
             groups: [
-              ['external-type', 'builtin-type', 'type'],
-              ['parent-type', 'sibling-type', 'index-type'],
-              ['internal-type'],
-              'builtin',
-              'external',
-              'internal',
-              ['parent', 'sibling', 'index'],
+              'type-import',
+              ['type-external', 'type-builtin'],
+              ['type-parent', 'type-sibling', 'type-index'],
+              ['type-internal'],
+
+              'value-builtin',
+              'value-external',
+              'value-internal',
+              ['value-parent', 'value-sibling', 'value-index'],
               'side-effect',
               'side-effect-style',
               'style',
-              'object',
+              'ts-equals-import',
               'unknown'
             ],
             internalPattern: ['^[@~#]/.*'],
-            newlinesBetween: 'always',
+            newlinesBetween: 1,
+            newlinesInside: 0,
             ...SORT_OPTIONS
           }
         ],
         'perfectionist/sort-named-exports': ['warn', SORT_OPTIONS],
-        'perfectionist/sort-named-imports': ['warn', SORT_OPTIONS]
+        'perfectionist/sort-named-imports': ['warn', SORT_OPTIONS],
+
+        ...overrides
       }
     }
   ]

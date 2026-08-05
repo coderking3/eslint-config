@@ -1,6 +1,8 @@
 import type { ParserOptions } from '@typescript-eslint/parser'
 import type { Linter } from 'eslint'
 import type { FlatGitignoreOptions } from 'eslint-config-flat-gitignore'
+import type { ConfigWithExtends } from 'eslint-flat-config-utils'
+import type { Options as VueBlocksOptions } from 'eslint-processor-vue-blocks'
 
 import type { ConfigNames, RuleOptions } from './typegen'
 
@@ -9,14 +11,17 @@ export type Awaitable<T> = T | Promise<T>
 export type Rules = Record<string, Linter.RuleEntry<any> | undefined> &
   RuleOptions
 
-export type { ConfigNames }
+export type { ConfigNames, RuleOptions }
 
 /**
  * An updated version of ESLint's `Linter.Config`, which provides autocompletion
  * for `rules` and relaxes type limitations for `plugins` and `rules`, because
  * many plugins still lack proper type definitions.
  */
-export type TypedFlatConfigItem = Omit<Linter.Config, 'plugins' | 'rules'> & {
+export type TypedFlatConfigItem = Omit<
+  ConfigWithExtends,
+  'plugins' | 'rules'
+> & {
   /**
    * An object containing a name-value mapping of plugin names to plugin objects.
    * When `files` is specified, these plugins are only available to the matching files.
@@ -32,10 +37,6 @@ export type TypedFlatConfigItem = Omit<Linter.Config, 'plugins' | 'rules'> & {
   rules?: Rules
 }
 
-export interface OptionsOverrides {
-  overrides?: TypedFlatConfigItem['rules']
-}
-
 export interface OptionsFiles {
   /**
    * Override the `files` option to provide custom globs.
@@ -43,12 +44,37 @@ export interface OptionsFiles {
   files?: string[]
 }
 
-export interface OptionsRegExp {
+export interface OptionsMarkdown extends OptionsOverrides {
   /**
-   * Override rulelevels
+   * Enable GFM (GitHub Flavored Markdown) support.
+   *
+   * @default true
    */
-  level?: 'error' | 'warn'
+  gfm?: boolean
+
+  /**
+   * Override rules for Markdown itself.
+   */
+  overridesMarkdown?: TypedFlatConfigItem['rules']
 }
+
+export interface OptionsVue extends OptionsOverrides {
+  /**
+   * Create virtual files for Vue SFC blocks to enable linting.
+   *
+   * @see https://github.com/antfu/eslint-processor-vue-blocks
+   * @default true
+   */
+  sfcBlocks?: boolean | VueBlocksOptions
+}
+
+export type OptionsTypescript =
+  | (OptionsTypeScriptWithTypes &
+      OptionsOverrides &
+      OptionsTypeScriptErasableOnly)
+  | (OptionsTypeScriptParserOptions &
+      OptionsOverrides &
+      OptionsTypeScriptErasableOnly)
 
 export interface OptionsComponentExts {
   /**
@@ -58,6 +84,32 @@ export interface OptionsComponentExts {
    * @default []
    */
   componentExts?: string[]
+}
+
+export interface OptionsE18e extends OptionsOverrides {
+  /**
+   * Include modernization rules.
+   *
+   * @see https://github.com/e18e/eslint-plugin#modernization
+   * @default true
+   */
+  modernization?: boolean
+
+  /**
+   * Include module replacements rules.
+   *
+   * @see https://github.com/e18e/eslint-plugin#module-replacements
+   * @default false
+   */
+  moduleReplacements?: boolean
+
+  /**
+   * Include performance improvements rules.
+   *
+   * @see https://github.com/e18e/eslint-plugin#performance-improvements
+   * @default true
+   */
+  performanceImprovements?: boolean
 }
 
 export interface OptionsUnicorn extends OptionsOverrides {
@@ -101,12 +153,77 @@ export interface OptionsTypeScriptWithTypes {
   overridesTypeAware?: TypedFlatConfigItem['rules']
 }
 
+export interface OptionsHasTypeScript {
+  typescript?: boolean
+}
+
+export interface OptionsOverrides {
+  overrides?: TypedFlatConfigItem['rules']
+}
+
+export interface OptionsProjectType {
+  /**
+   * Type of the project. `lib` will enable more strict rules for libraries.
+   *
+   * @default 'app'
+   */
+  type?: 'app' | 'lib'
+}
+
+export interface OptionsTypeScriptErasableOnly {
+  /**
+   * Enable erasable syntax only rules.
+   *
+   * @see https://github.com/JoshuaKGoldberg/eslint-plugin-erasable-syntax-only
+   * @default false
+   */
+  erasableOnly?: boolean
+}
+
+export interface OptionsRegExp {
+  /**
+   * Override rule levels.
+   */
+  level?: 'error' | 'warn'
+}
+
+export interface OptionsPnpm {
+  /**
+   * Requires catalogs usage.
+   *
+   * Detects automatically based on whether `catalogs` is used in pnpm-workspace.yaml.
+   */
+  catalogs?: boolean
+
+  /**
+   * Enable linting for package.json using the JSONC parser.
+   *
+   * @default true
+   */
+  json?: boolean
+
+  /**
+   * Enable linting for pnpm-workspace.yaml using the YAML parser.
+   *
+   * @default true
+   */
+  yaml?: boolean
+
+  /**
+   * Sort entries in pnpm-workspace.yaml.
+   *
+   * @default true
+   */
+  sort?: boolean
+}
+
 export interface OptionsUnoCSS extends OptionsOverrides {
   /**
    * Enable attributify support.
    * @default true
    */
   attributify?: boolean
+
   /**
    * Enable strict mode by throwing errors about blocklisted classes.
    * @default false
@@ -114,15 +231,10 @@ export interface OptionsUnoCSS extends OptionsOverrides {
   strict?: boolean
 }
 
-export interface OptionsHasTypeScript {
-  typescript?: boolean
-}
+export interface OptionsReact extends OptionsOverrides {}
 
-export type OptionsTypescript =
-  | (OptionsTypeScriptWithTypes & OptionsOverrides)
-  | (OptionsTypeScriptParserOptions & OptionsOverrides)
-
-export interface OptionsConfig extends OptionsComponentExts {
+export interface OptionsConfig
+  extends OptionsComponentExts, OptionsProjectType {
   /**
    * Enable gitignore support.
    *
@@ -136,7 +248,7 @@ export interface OptionsConfig extends OptionsComponentExts {
   /**
    * Extend the global ignores.
    *
-   * Passing an array to extends the ignores.
+   * Passing an array to extend the ignores.
    * Passing a function to modify the default ignores.
    *
    * @default []
@@ -149,13 +261,35 @@ export interface OptionsConfig extends OptionsComponentExts {
   javascript?: OptionsOverrides
 
   /**
+   * Enable Node.js rules.
+   *
+   * @default true
+   */
+  node?: boolean
+
+  /**
+   * Enable JSDoc rules.
+   *
+   * @default true
+   */
+  jsdoc?: boolean
+
+  /**
    * Enable TypeScript support.
    *
-   * Passing an object to enable TypeScript Language Server support.
+   * Passing an object enables TypeScript Language Server support.
    *
    * @default auto-detect based on the dependencies
    */
   typescript?: boolean | OptionsTypescript
+
+  /**
+   * Options for @e18e/eslint-plugin.
+   *
+   * @see https://github.com/e18e/eslint-plugin
+   * @default true
+   */
+  e18e?: boolean | OptionsE18e
 
   /**
    * Options for eslint-plugin-unicorn.
@@ -165,11 +299,25 @@ export interface OptionsConfig extends OptionsComponentExts {
   unicorn?: boolean | OptionsUnicorn
 
   /**
+   * Options for eslint-plugin-perfectionist.
+   *
+   * @default true
+   */
+  perfectionist?: boolean | OptionsOverrides
+
+  /**
+   * Options for eslint-plugin-import-lite.
+   *
+   * @default true
+   */
+  imports?: boolean | OptionsOverrides
+
+  /**
    * Enable Vue support.
    *
    * @default auto-detect based on the dependencies
    */
-  vue?: boolean
+  vue?: boolean | OptionsVue
 
   /**
    * Enable JSONC support.
@@ -186,13 +334,11 @@ export interface OptionsConfig extends OptionsComponentExts {
   yaml?: boolean | OptionsOverrides
 
   /**
-   * Enable linting for **code snippets** in Markdown.
-   *
-   * For formatting Markdown content, enable also `formatters.markdown`.
+   * Enable linting for code snippets in Markdown and the Markdown content itself.
    *
    * @default true
    */
-  markdown?: boolean | OptionsOverrides
+  markdown?: boolean | OptionsMarkdown
 
   /**
    * Enable regexp rules.
@@ -203,27 +349,18 @@ export interface OptionsConfig extends OptionsComponentExts {
   regexp?: boolean | (OptionsRegExp & OptionsOverrides)
 
   /**
-   * Enable prettier support.
-   * Requires installing:
-   * - `prettier`
-   *
-   * @default true
-   */
-  prettier?: boolean
-
-  /**
-   * Enable react rules.
+   * Enable React rules.
    *
    * Requires installing:
    * - `@eslint-react/eslint-plugin`
-   * - `eslint-plugin-react-hooks`
+   * - `eslint-plugin-react-refresh`
    *
    * @default auto-detect based on the dependencies
    */
-  react?: boolean | OptionsOverrides
+  react?: boolean | OptionsReact
 
   /**
-   * Enable nextjs rules.
+   * Enable Next.js rules.
    *
    * Requires installing:
    * - `@next/eslint-plugin-next`
@@ -233,7 +370,7 @@ export interface OptionsConfig extends OptionsComponentExts {
   nextjs?: boolean | OptionsOverrides
 
   /**
-   * Enable unocss rules.
+   * Enable UnoCSS rules.
    *
    * Requires installing:
    * - `@unocss/eslint-plugin`
@@ -243,16 +380,21 @@ export interface OptionsConfig extends OptionsComponentExts {
   unocss?: boolean | OptionsUnoCSS
 
   /**
-   * Enable pnpm (workspace/catalogs) support.
+   * Enable pnpm workspace and catalogs support.
    *
-   * Currently it's disabled by default, as it's still experimental.
-   * In the future it will be smartly enabled based on the project usage.
-   *
-   * @see https://github.com/antfu/pnpm-workspace-utils
-   * @experimental
-   * @default false
+   * @default auto-detect based on pnpm-workspace.yaml
    */
-  pnpm?: boolean
+  pnpm?: boolean | OptionsPnpm
+
+  /**
+   * Enable Prettier support.
+   *
+   * Requires installing:
+   * - `prettier`
+   *
+   * @default true
+   */
+  prettier?: boolean
 
   /**
    * Automatically rename plugins in the config.

@@ -1,5 +1,6 @@
 import type { OptionsUnicorn, TypedFlatConfigItem } from '../types'
 
+import { GLOB_SRC } from '../globs'
 import { pluginUnicorn } from '../plugins'
 
 export async function unicorn(
@@ -9,10 +10,14 @@ export async function unicorn(
 
   return [
     {
-      name: 'king3/unicorn/rules',
+      name: 'king3/unicorn/setup',
       plugins: {
         unicorn: pluginUnicorn
-      },
+      }
+    },
+    {
+      files: [GLOB_SRC],
+      name: 'king3/unicorn/rules',
       rules: {
         ...(allRecommended
           ? (pluginUnicorn.configs.recommended.rules as any)
