@@ -10,9 +10,10 @@
 ## 特性
 
 - 🚀 Flat 配置，轻松组合
-- ✨ 自动检测 TypeScript、Vue、React 支持
+- ✨ 自动检测 TypeScript、Vue、React 和 UnoCSS 支持
 - 🎨 与 Prettier 完美协作
-- 📦 可选配置支持 UnoCSS、React 等
+- 📝 检查 Markdown 正文和代码块
+- 📦 可选配置支持 Next.js 等
 - 🔧 合理的默认配置，易于自定义
 
 ## 安装
@@ -27,7 +28,7 @@ pnpm add -D eslint @king3/eslint-config
 
 ```js
 // eslint.config.mjs
-import king3 from '@king3/eslint-config'
+import { king3 } from '@king3/eslint-config'
 
 export default king3()
 ```
@@ -52,8 +53,8 @@ export default king3()
 你可以单独配置每个集成:
 
 ```js
-// eslint.config.js
-import king3 from '@king3/eslint-config'
+// eslint.config.mjs
+import { king3 } from '@king3/eslint-config'
 
 export default king3(
   {
@@ -94,11 +95,11 @@ export default king3(
 
 #### React
 
-启用 React 支持:
+安装了 `react` 或 `react-dom` 时会自动启用 React 支持，你也可以显式开启：
 
 ```js
-// eslint.config.js
-import king3 from '@king3/eslint-config'
+// eslint.config.mjs
+import { king3 } from '@king3/eslint-config'
 
 export default king3({
   react: true
@@ -108,7 +109,7 @@ export default king3({
 安装所需依赖:
 
 ```bash
-pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-hooks
+pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-refresh
 ```
 
 #### Next.js
@@ -116,27 +117,27 @@ pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-hooks
 要启用 Next.js 支持，您需要明确地将其开启：
 
 ```js
-// eslint.config.js
-import king3 from '@king3/eslint-config'
+// eslint.config.mjs
+import { king3 } from '@king3/eslint-config'
 
 export default king3({
   nextjs: true
 })
 ```
 
-运行 `npx eslint` 时，系统会提示您安装所需的依赖项；否则，您可以手动安装它们：
+运行 `pnpm exec eslint` 时，系统会提示你安装所需的依赖项；否则，你可以手动安装它们：
 
 ```bash
-npm i -D @next/eslint-plugin-next
+pnpm add -D @next/eslint-plugin-next
 ```
 
 #### UnoCSS
 
-启用 UnoCSS 支持:
+安装了 UnoCSS 相关包时会自动启用 UnoCSS 支持，你也可以显式开启：
 
 ```js
-// eslint.config.js
-import king3 from '@king3/eslint-config'
+// eslint.config.mjs
+import { king3 } from '@king3/eslint-config'
 
 export default king3({
   unocss: true
@@ -189,7 +190,7 @@ pnpm add -D @unocss/eslint-plugin
   /* Prettier */
   "prettier.enable": true,
   // 可选：指定你自定义的 Prettier 配置文件路径
-  "prettier.configPath": "./prettier.config.js"
+  "prettier.configPath": "./prettier.config.mjs"
 }
 ```
 
@@ -201,7 +202,7 @@ pnpm add -D @unocss/eslint-plugin
 pnpm add -D @king3/prettier-config
 ```
 
-在项目根目录创建 `.prettierrc.js`（或 `prettier.config.js`）:
+在项目根目录创建 `prettier.config.mjs`：
 
 ```js
 import { king3 } from '@king3/prettier-config'
@@ -217,7 +218,7 @@ export default king3({
 大部分规则相同,但也有一些关键差异:
 
 - ✨ 使用 Prettier 而非 ESLint Stylistic
-- 🎯 对 Vue、React、Nuxt、Next 等框架的一流支持
+- 🎯 支持 Vue、React 和 Next.js，并自动识别 Nuxt、VitePress 与 Slidev 项目
 - 📏 更严格、更主观的默认配置
 - 🔧 更简洁的配置 API
 

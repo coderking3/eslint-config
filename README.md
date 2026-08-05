@@ -10,9 +10,10 @@
 ## Features
 
 - 🚀 Flat config, compose easily
-- ✨ Auto-detect TypeScript, Vue, React support
+- ✨ Auto-detect TypeScript, Vue, React, and UnoCSS support
 - 🎨 Works seamlessly with Prettier
-- 📦 Optional configs for UnoCSS, React, and more
+- 📝 Lints Markdown content and fenced code blocks
+- 📦 Optional configs for Next.js and more
 - 🔧 Reasonable defaults, easy to customize
 
 ## Installation
@@ -27,7 +28,7 @@ Create `eslint.config.mjs` in your project root:
 
 ```js
 // eslint.config.mjs
-import king3 from '@king3/eslint-config'
+import { king3 } from '@king3/eslint-config'
 
 export default king3()
 ```
@@ -52,8 +53,8 @@ Add the following scripts to your `package.json`:
 You can configure each integration individually:
 
 ```js
-// eslint.config.js
-import king3 from '@king3/eslint-config'
+// eslint.config.mjs
+import { king3 } from '@king3/eslint-config'
 
 export default king3(
   {
@@ -95,11 +96,11 @@ We provide some optional configs for specific use cases. Dependencies are not in
 
 #### React
 
-To enable React support:
+React support is auto-detected when `react` or `react-dom` is installed. You can also force-enable it:
 
 ```js
-// eslint.config.js
-import king3 from '@king3/eslint-config'
+// eslint.config.mjs
+import { king3 } from '@king3/eslint-config'
 
 export default king3({
   react: true
@@ -109,7 +110,7 @@ export default king3({
 Install required dependencies:
 
 ```bash
-pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-hooks
+pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-refresh
 ```
 
 #### Next.js
@@ -117,27 +118,27 @@ pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-hooks
 To enable Next.js support, you need to explicitly turn it on:
 
 ```js
-// eslint.config.js
-import king3 from '@king3/eslint-config'
+// eslint.config.mjs
+import { king3 } from '@king3/eslint-config'
 
 export default king3({
   nextjs: true
 })
 ```
 
-Running `npx eslint` should prompt you to install the required dependencies, otherwise, you can install them manually:
+Running `pnpm exec eslint` should prompt you to install the required dependencies; otherwise, you can install them manually:
 
 ```bash
-npm i -D @next/eslint-plugin-next
+pnpm add -D @next/eslint-plugin-next
 ```
 
 #### UnoCSS
 
-To enable UnoCSS support:
+UnoCSS support is auto-detected when an UnoCSS package is installed. You can also force-enable it:
 
 ```js
-// eslint.config.js
-import king3 from '@king3/eslint-config'
+// eslint.config.mjs
+import { king3 } from '@king3/eslint-config'
 
 export default king3({
   unocss: true
@@ -190,7 +191,7 @@ For the best experience with Prettier, use the following settings:
   /* Prettier */
   "prettier.enable": true,
   // Optional: specify your custom Prettier config file path
-  "prettier.configPath": "./prettier.config.js"
+  "prettier.configPath": "./prettier.config.mjs"
 }
 ```
 
@@ -202,7 +203,7 @@ You can use [@king3/prettier-config](https://github.com/coderking3/prettier-conf
 pnpm add -D @king3/prettier-config
 ```
 
-Create `.prettierrc.js` (or `./prettier.config.js`) in your project root:
+Create `prettier.config.mjs` in your project root:
 
 ```js
 import { king3 } from '@king3/prettier-config'
@@ -218,7 +219,7 @@ export default king3({
 Most rules are the same, but with some key differences:
 
 - ✨ Uses Prettier instead of ESLint Stylistic
-- 🎯 First-class support for Vue, React, Nuxt, Next, etc.
+- 🎯 Vue, React, and Next.js support, with automatic detection for Nuxt, VitePress, and Slidev
 - 📏 Stricter and more opinionated defaults
 - 🔧 Simpler configuration API
 
