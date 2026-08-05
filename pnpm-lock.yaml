@@ -10,8 +10,8 @@ catalogs:
       specifier: ^3.1.0
       version: 3.2.0
     '@king3/prettier-config':
-      specifier: ^2.0.0
-      version: 2.0.0
+      specifier: ^2.1.0
+      version: 2.1.0
     '@types/node':
       specifier: ^26.1.1
       version: 26.1.2
@@ -273,7 +273,7 @@ importers:
         version: 3.2.0(eslint@10.8.0(jiti@2.7.0))(srvx@0.12.5)
       '@king3/prettier-config':
         specifier: catalog:dev
-        version: 2.0.0(prettier@3.9.6)
+        version: 2.1.0(prettier@3.9.6)
       '@next/eslint-plugin-next':
         specifier: catalog:peer
         version: 16.3.0(eslint@10.8.0(jiti@2.7.0))
@@ -695,8 +695,8 @@ packages:
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
 
-  '@king3/prettier-config@2.0.0':
-    resolution: {integrity: sha512-958CVpY7M54+skt22CEnwU12l96FRrGn+wfS9RRE8aARtnKrOfJ4AI3bpmPlfeh1T5HO+nezkVDGCddBVWiJpw==}
+  '@king3/prettier-config@2.1.0':
+    resolution: {integrity: sha512-WPTDjUHk61UYqSVczfrGtZksytHllYImiTikVMrgUlCXnFYqmGrQzDTOYsNXnAP+qB6ub41OfQ/4CamBjV96fA==}
     peerDependencies:
       prettier: ^3.9.6
 
@@ -2929,7 +2929,7 @@ snapshots:
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
-  '@king3/prettier-config@2.0.0(prettier@3.9.6)':
+  '@king3/prettier-config@2.1.0(prettier@3.9.6)':
     dependencies:
       '@prettier/plugin-oxc': 0.2.2
       prettier: 3.9.6
